@@ -1,9 +1,9 @@
 {
-  "label": "Getting Started",
+  "label": "ZkTerminal",
   "position": 2,
-  "collapsed": false,
   "link": {
-    "type": "doc",
-    "id": "getting-started/index"
+    "type": "generated-index",
+    "slug": "/getting-started/zkterminal",
+    "title": "ZkTerminal"
   }
 }

@@ -1,0 +1,57 @@
+# ZK Heart Health
+
+
+## 1) The Use Case (what’s being proved)
+
+* *Goal:* Prove a private *heart‑risk score* meets a policy threshold without revealing raw medical values.
+* *Selective disclosure:* Verifier learns only a *YES/NO* claim and a *model commitment hash* (binds the model used); no feature values are shown.
+* *Privacy AI fit:* Demonstrates privacy‑preserving analytics with *verifiability* and *compact proofs* (zk‑SNARK: Groth16).
+
+## 2) Future Scope (Healthcare & Genomics)
+
+*Clinical & patient apps*
+
+* *On‑device proofs*: Patients compute proofs on their phone; clinics/insurers verify a predicate (e.g., PRS ≥ T) without accessing genomes.
+* *Selective disclosures*: “Lab value in range” or “eligibility met” proofs instead of sharing raw labs or charts.
+* *Consent receipts*: Publish proofs that an access decision met policy/consent, without exposing data.
+
+*Genomics‑specific*
+
+* *Polygenic Risk Score (PRS)*: Prove PRS thresholds for specific conditions without revealing variants.
+* *Variant status (PGx/rare disease): Use **Merkle‑tree membership* to prove presence/absence in a panel without revealing which variant.
+* *Cohort queries across sites: Hospital A & B return **count proofs* for inclusion criteria; meta‑analysis runs without sharing genomes.
+
+*Provider, payer, regulator*
+
+* *Utilization controls*: Prove compliance with coverage criteria (e.g., biomarkers present) before reimbursement.
+* *Auditable privacy*: Third parties can re‑verify proofs later; combine with signed policies for compliance trails.
+
+*Technical extensions*
+
+* *PII commitments*: Hash(Name, salt) as a public handle; identity stays hidden but proofs are linkable when desired.
+* *Per‑verifier salts*: Prevent cross‑verifier linkage; same user looks unrelated across orgs.
+* *On‑chain verification*: Use generated Verifier.sol for public, timestamped verification on L2s.
+* *MPC/HE + ZK*: Use MPC/HE for collaborative compute; ZK to attest results and policies were followed.
+* *FHIR/SMART integration*: Wrap ZK proofs as FHIR DocumentReference or SMART app artifacts.
+
+---
+
+## 3) What these commands guarantee
+
+* *Build step* produces the cryptographic keys tied to this circuit and weights (prevents model swap).
+* *Prover step* keeps inputs private, outputs only a succinct proof.
+* *Verifier step* checks correctness fast, learns only the claim and model hash — *no raw data*.
+
+<figure style={{ textAlign: 'center' }}>
+  <video
+    src="/videos/health.mp4"
+    controls
+    style={{ maxWidth: '900px', width: '100%', borderRadius: 12 , height:'500px' }}
+  />
+  <figcaption style={{ fontSize: '0.9rem', opacity: 0.75, marginTop: 8 }}>
+    ZK Heart Health — private risk proof demo
+  </figcaption>
+</figure>
+
+
+> That’s the full promise: *Verifiable results with minimal disclosure*, ready to extend to genomics and broader medical predicates.

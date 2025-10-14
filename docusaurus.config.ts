@@ -154,7 +154,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'ZkAGI Docs',
   tagline: 'Privacy preserving AI',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/logo.png',
 
   future: { v4: true },
 
@@ -178,15 +178,15 @@ const config: Config = {
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: { type: ['rss', 'atom'], xslt: true },
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        // blog: {
+        //   showReadingTime: true,
+        //   feedOptions: { type: ['rss', 'atom'], xslt: true },
+        //   editUrl:
+        //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        //   onInlineTags: 'warn',
+        //   onInlineAuthors: 'warn',
+        //   onUntruncatedBlogPosts: 'warn',
+        // },
         theme: { customCss: './src/css/custom.css' },
       } satisfies Preset.Options,
     ],
@@ -198,7 +198,7 @@ const config: Config = {
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'ZkAGI',
-      logo: { alt: 'My Site Logo', src: 'img/logo.svg' },
+      logo: { alt: 'My Site Logo', src: 'img/logo.png' },
       items: [
         {
           type: 'docSidebar',
@@ -206,7 +206,7 @@ const config: Config = {
           position: 'left',
           label: 'Docs', // (optional) relabel from "Tutorial"
         },
-        { to: '/blog', label: 'Blog', position: 'left' },
+        // { to: '/blog', label: 'Blog', position: 'left' },
         {
           href: 'https://github.com/facebook/docusaurus',
           label: 'GitHub',
@@ -229,20 +229,19 @@ const config: Config = {
         {
           title: 'Community',
           items: [
-            { label: 'Stack Overflow', href: 'https://stackoverflow.com/questions/tagged/docusaurus' },
-            { label: 'Discord', href: 'https://discordapp.com/invite/docusaurus' },
-            { label: 'X', href: 'https://x.com/docusaurus' },
+            { label: 'Discord', href: 'https://discord.gg/4GP4xFE5aF' },
+            { label: 'X', href: 'https://www.twitter.com/zk_Agi' },
           ],
         },
         {
           title: 'More',
           items: [
-            { label: 'Blog', to: '/blog' },
-            { label: 'GitHub', href: 'https://github.com/facebook/docusaurus' },
+            // { label: 'Blog', to: '/blog' },
+            { label: 'GitHub', href: 'https://github.com/ZkAG' },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} ZkAGI.`,
     },
     prism: { theme: prismThemes.github, darkTheme: prismThemes.dracula },
   } satisfies Preset.ThemeConfig,

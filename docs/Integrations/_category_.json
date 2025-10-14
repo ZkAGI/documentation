@@ -1,9 +1,9 @@
 {
-  "label": "ZkTerminal",
-  "position": 2,
+  "label": "ZkAGI Integrations",
+  "position": 4,
   "link": {
     "type": "generated-index",
-    "slug": "/getting-started/zkterminal",
-    "title": "ZkTerminal"
+    "slug": "/integrations",
+    "title": "integrations"
   }
 }

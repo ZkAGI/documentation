@@ -1,45 +1,26 @@
-# ZK Heart Health
+import Head from '@docusaurus/Head';
 
-## 1) The Use Case (what’s being proved)
+## What is ZK Heart Health? {#what-is-zk-heart-health}
 
-* *Goal:* Prove a private *heart‑risk score* meets a policy threshold without revealing raw medical values.
-* *Selective disclosure:* Verifier learns only a *YES/NO* claim and a *model commitment hash* (binds the model used); no feature values are shown.
-* *Privacy AI fit:* Demonstrates privacy‑preserving analytics with *verifiability* and *compact proofs* (zk‑SNARK: Groth16).
+<p className="snippet-answer">
+ZK Heart Health is a ZkAGI application that proves a private heart-risk score meets a policy threshold without revealing raw medical values. It uses zk-SNARK (Groth16) proofs for privacy-preserving analytics with compact, verifiable selective disclosure.
+</p>
 
-## 2) Future Scope (Healthcare & Genomics)
-
-*Clinical & patient apps*
-
-* *On‑device proofs*: Patients compute proofs on their phone; clinics/insurers verify a predicate (e.g., PRS ≥ T) without accessing genomes.
-* *Selective disclosures*: “Lab value in range” or “eligibility met” proofs instead of sharing raw labs or charts.
-* *Consent receipts*: Publish proofs that an access decision met policy/consent, without exposing data.
-
-*Genomics‑specific*
-
-* *Polygenic Risk Score (PRS)*: Prove PRS thresholds for specific conditions without revealing variants.
-* *Variant status (PGx/rare disease): Use **Merkle‑tree membership* to prove presence/absence in a panel without revealing which variant.
-* *Cohort queries across sites: Hospital A & B return **count proofs* for inclusion criteria; meta‑analysis runs without sharing genomes.
-
-*Provider, payer, regulator*
-
-* *Utilization controls*: Prove compliance with coverage criteria (e.g., biomarkers present) before reimbursement.
-* *Auditable privacy*: Third parties can re‑verify proofs later; combine with signed policies for compliance trails.
-
-*Technical extensions*
-
-* *PII commitments*: Hash(Name, salt) as a public handle; identity stays hidden but proofs are linkable when desired.
-* *Per‑verifier salts*: Prevent cross‑verifier linkage; same user looks unrelated across orgs.
-* *On‑chain verification*: Use generated Verifier.sol for public, timestamped verification on L2s.
-* *MPC/HE + ZK*: Use MPC/HE for collaborative compute; ZK to attest results and policies were followed.
-* *FHIR/SMART integration*: Wrap ZK proofs as FHIR DocumentReference or SMART app artifacts.
+- **Goal:** Prove a private heart-risk score meets a policy threshold without revealing raw medical values
+- **Selective disclosure:** The verifier learns only a YES/NO claim and a model commitment hash (which binds the model used); no feature values are shown
+- **Privacy AI fit:** Demonstrates privacy-preserving analytics with verifiability and compact proofs (zk-SNARK: Groth16)
 
 ---
 
-## 3) What these commands guarantee
+## How does ZkAGI prove heart risk scores privately? {#how-does-zkagi-prove-heart-risk-scores-privately}
 
-* *Build step* produces the cryptographic keys tied to this circuit and weights (prevents model swap).
-* *Prover step* keeps inputs private, outputs only a succinct proof.
-* *Verifier step* checks correctness fast, learns only the claim and model hash — *no raw data*.
+<p className="snippet-answer">
+ZkAGI uses a three-step cryptographic pipeline — build, prove, verify — where the build step produces keys tied to the circuit and model weights, the prover keeps inputs private and outputs a succinct proof, and the verifier checks correctness learning only the claim and model hash. This ensures verifiable results with minimal disclosure and prevents model swaps.
+</p>
+
+- **Build step:** Produces the cryptographic keys tied to the circuit and weights (prevents model swap)
+- **Prover step:** Keeps inputs private, outputs only a succinct proof
+- **Verifier step:** Checks correctness fast, learns only the claim and model hash — no raw data
 
 <figure style={{ textAlign: 'center' }}>
   <video
@@ -52,5 +33,110 @@
   </figcaption>
 </figure>
 
+> That's the full promise: *Verifiable results with minimal disclosure*, ready to extend to genomics and broader medical predicates.
 
-> That’s the full promise: *Verifiable results with minimal disclosure*, ready to extend to genomics and broader medical predicates.
+---
+
+## What are the future healthcare and genomics applications of ZkAGI? {#what-are-the-future-healthcare-and-genomics-applications-of-zkagi}
+
+<p className="snippet-answer">
+ZkAGI's zero-knowledge proof technology extends to on-device patient proofs, polygenic risk scores, cross-site cohort queries, and regulatory compliance — all without exposing raw medical data or genomes. Technical extensions include PII commitments, on-chain verification via Verifier.sol on L2s, and integration with FHIR/SMART health data standards.
+</p>
+
+**Clinical and patient apps**
+
+- **On-device proofs:** Patients compute proofs on their phone; clinics/insurers verify a predicate (e.g., PRS >= T) without accessing genomes
+- **Selective disclosures:** "Lab value in range" or "eligibility met" proofs instead of sharing raw labs or charts
+- **Consent receipts:** Publish proofs that an access decision met policy/consent, without exposing data
+
+**Genomics-specific**
+
+- **Polygenic Risk Score (PRS):** Prove PRS thresholds for specific conditions without revealing variants
+- **Variant status (PGx/rare disease):** Use Merkle-tree membership to prove presence/absence in a panel without revealing which variant
+- **Cohort queries across sites:** Hospital A and B return count proofs for inclusion criteria; meta-analysis runs without sharing genomes
+
+**Provider, payer, regulator**
+
+- **Utilization controls:** Prove compliance with coverage criteria (e.g., biomarkers present) before reimbursement
+- **Auditable privacy:** Third parties can re-verify proofs later; combine with signed policies for compliance trails
+
+**Technical extensions**
+
+- **PII commitments:** Hash(Name, salt) as a public handle; identity stays hidden but proofs are linkable when desired
+- **Per-verifier salts:** Prevent cross-verifier linkage; same user looks unrelated across orgs
+- **On-chain verification:** Use generated Verifier.sol for public, timestamped verification on L2s
+- **MPC/HE + ZK:** Use MPC/HE for collaborative compute; ZK to attest results and policies were followed
+- **FHIR/SMART integration:** Wrap ZK proofs as FHIR DocumentReference or SMART app artifacts
+
+---
+
+## What do ZkAGI's ZK proof commands guarantee? {#what-do-zkagis-zk-proof-commands-guarantee}
+
+<p className="snippet-answer">
+ZkAGI's ZK proof commands guarantee that the cryptographic keys are bound to a specific circuit and model (preventing model swaps), that user inputs remain private with only a succinct proof as output, and that verification is fast while revealing only the claim and model hash. Together, these steps deliver verifiable results with minimal disclosure.
+</p>
+
+- **Build step** produces the cryptographic keys tied to this circuit and weights (prevents model swap)
+- **Prover step** keeps inputs private, outputs only a succinct proof
+- **Verifier step** checks correctness fast, learns only the claim and model hash — no raw data
+
+---
+
+## Related Questions
+
+- [What is ZkAGI OS?](/docs/getting-started/ZkAGI%20OS/about#what-is-zkagi-os)
+- [How does ZkAGI OS work?](/docs/getting-started/ZkAGI%20OS/how-zkagi-os-works#how-does-zkagi-os-work)
+- [What is the Oasis ROFL Hyperliquid Trading Agent?](/docs/Integrations/oasis#what-is-the-oasis-rofl-hyperliquid-trading-agent)
+
+<Head>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is ZK Heart Health?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ZK Heart Health is a ZkAGI application that proves a private heart-risk score meets a policy threshold without revealing raw medical values. It uses zk-SNARK (Groth16) proofs for privacy-preserving analytics with compact, verifiable selective disclosure."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does ZkAGI prove heart risk scores privately?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ZkAGI uses a three-step cryptographic pipeline — build, prove, verify — where the build step produces keys tied to the circuit and model weights, the prover keeps inputs private and outputs a succinct proof, and the verifier checks correctness learning only the claim and model hash."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the future healthcare and genomics applications of ZkAGI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ZkAGI's zero-knowledge proof technology extends to on-device patient proofs, polygenic risk scores, cross-site cohort queries, and regulatory compliance — all without exposing raw medical data or genomes. Technical extensions include PII commitments, on-chain verification via Verifier.sol on L2s, and integration with FHIR/SMART health data standards."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What do ZkAGI's ZK proof commands guarantee?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ZkAGI's ZK proof commands guarantee that the cryptographic keys are bound to a specific circuit and model (preventing model swaps), that user inputs remain private with only a succinct proof as output, and that verification is fast while revealing only the claim and model hash."
+        }
+      }
+    ]
+  })}
+  </script>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "ZK Heart Health — Private Heart Risk Proofs with ZkAGI",
+    "proficiencyLevel": "Advanced",
+    "about": { "@type": "SoftwareApplication", "name": "ZkAGI" },
+    "dateModified": "2026-03-11"
+  })}
+  </script>
+</Head>

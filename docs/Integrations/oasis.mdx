@@ -1,4 +1,10 @@
-# Oasis × ROFL × Hyperliquid — Telegram Trading Agent
+import Head from '@docusaurus/Head';
+
+## What is the Oasis ROFL Hyperliquid Trading Agent? {#what-is-the-oasis-rofl-hyperliquid-trading-agent}
+
+<p className="snippet-answer">
+The Oasis ROFL Hyperliquid Trading Agent is a Telegram-based trading bot that registers on Oasis Sapphire (testnet) and executes perpetual futures orders on Hyperliquid with TEE-backed secret handling. It stores encrypted strategies via AES-GCM with keys managed inside a ROFL enclave, ensuring user API secrets and wallet addresses are never exposed in plaintext.
+</p>
 
 <figure style={{ textAlign: 'center' }}>
   <video
@@ -11,52 +17,118 @@
   </figcaption>
 </figure>
 
-## What it can do.
-
-* Agent registration on Oasis Sapphire (testnet):
-
-  * Stores agent metadata and encrypted strategies on a confidential EVM (Sapphire).
-  * Strategy bytes encrypted with AES‑GCM, keys managed via ROFL enclave.
-* Telegram onboarding & control:
-
-  * One chat for connect wallets, **set risk, **trade, and **track portfolio.
-  * Manual mode (place trades from latest signal) or Auto‑trade (polls signals every 30 min).
-* Hyperliquid integration:
-
-  * Place/manage perps orders using user’s API wallet; track positions on **API + Main wallets.
-* TEE‑backed secret handling (ROFL):
-
-  * User pastes HL API secret & wallet addresses once; bot calls ROFL Gateway → ROFL TEE app to encrypt/decrypt.
-  * Bot/database only ever store ciphertexts; decryption occurs **inside the enclave on demand.
-* Risk & portfolio tools:
-
-  * Apply ZkAGI defaults or set leverage/size caps; unified balances & open positions.
+- **Agent registration on Oasis Sapphire (testnet):**
+  - Stores agent metadata and encrypted strategies on a confidential EVM (Sapphire)
+  - Strategy bytes encrypted with AES-GCM, keys managed via ROFL enclave
+- **Telegram onboarding and control:**
+  - One chat for connect wallets, set risk, trade, and track portfolio
+  - Manual mode (place trades from latest signal) or Auto-trade (polls signals every 30 min)
+- **Hyperliquid integration:**
+  - Place/manage perps orders using user's API wallet; track positions on API + Main wallets
+- **TEE-backed secret handling (ROFL):**
+  - User pastes HL API secret and wallet addresses once; bot calls ROFL Gateway to ROFL TEE app to encrypt/decrypt
+  - Bot/database only ever store ciphertexts; decryption occurs inside the enclave on demand
+- **Risk and portfolio tools:**
+  - Apply ZkAGI defaults or set leverage/size caps; unified balances and open positions
 
 ---
 
-## Security insights 
+## How does the Oasis trading agent handle security? {#how-does-the-oasis-trading-agent-handle-security}
 
-* Secrets are end‑to‑end encrypted before persistence; only ROFL enclave holds keys.
-* Least‑privilege: API keys scoped to HL perps; operational errors are redacted in chat.
-* Users are prompted to delete sensitive messages after onboarding.
+<p className="snippet-answer">
+The Oasis trading agent encrypts all secrets end-to-end before persistence, with only the ROFL enclave holding decryption keys. API keys are scoped to Hyperliquid perps with least-privilege access, operational errors are redacted in chat, and users are prompted to delete sensitive messages after onboarding.
+</p>
 
----
-
-## Future scope 
-
-* Policy‑as‑proof: ZK attestations that trades respect user risk limits (leverage/size) without revealing positions.
-* Account abstraction: Wallet‑less onboarding via session keys; bundled tx on Sapphire.
-* Multi‑venue routing: Extend beyond Hyperliquid to additional perps/spot venues with best‑execution logic.
-* Strategy marketplace: Publish encrypted strategies with verifiable performance hashes; users opt‑in to auto‑follow.
-* Invariant guards: On‑chain or enclave checks for max drawdown / VaR before order submission.
-* Compliance hooks: Export auditable trails (hash‑chained) without revealing user PII or raw orders.
-* Mobile PWA: Client‑side signing and optional local MPC shares for API keys.
+- **End-to-end encryption:** Secrets are encrypted before persistence; only the ROFL enclave holds keys
+- **Least-privilege:** API keys scoped to HL perps; operational errors are redacted in chat
+- **User hygiene:** Users are prompted to delete sensitive messages after onboarding
 
 ---
 
-## User journey (Telegram)
+## What is the future scope of the Oasis trading agent? {#what-is-the-future-scope-of-the-oasis-trading-agent}
 
-1. /start → registers Agent on Sapphire; shows main keyboard.
-2. Connect Hyperliquid → paste API secret + addresses (encrypted via ROFL).
-3. Trade → Manual (from latest signal) or Auto‑trade (scheduler).
-4. Risk & Portfolio → adjust caps, view balances, close all.
+<p className="snippet-answer">
+Future development includes ZK attestations that trades respect user risk limits without revealing positions, wallet-less onboarding via session keys, and multi-venue routing beyond Hyperliquid. Additional plans cover an encrypted strategy marketplace with verifiable performance hashes, invariant guards for max drawdown/VaR, compliance hooks, and a mobile PWA with client-side signing.
+</p>
+
+- **Policy-as-proof:** ZK attestations that trades respect user risk limits (leverage/size) without revealing positions
+- **Account abstraction:** Wallet-less onboarding via session keys; bundled tx on Sapphire
+- **Multi-venue routing:** Extend beyond Hyperliquid to additional perps/spot venues with best-execution logic
+- **Strategy marketplace:** Publish encrypted strategies with verifiable performance hashes; users opt-in to auto-follow
+- **Invariant guards:** On-chain or enclave checks for max drawdown / VaR before order submission
+- **Compliance hooks:** Export auditable trails (hash-chained) without revealing user PII or raw orders
+- **Mobile PWA:** Client-side signing and optional local MPC shares for API keys
+
+---
+
+## What is the user journey for the Oasis Telegram trading agent? {#what-is-the-user-journey-for-the-oasis-telegram-trading-agent}
+
+<p className="snippet-answer">
+The user journey starts with /start in Telegram, which registers the agent on Sapphire and shows the main keyboard. From there, users connect their Hyperliquid wallet by pasting API secrets (encrypted via ROFL), then trade manually or via auto-trade, and manage risk settings and portfolio views.
+</p>
+
+1. `/start` — registers Agent on Sapphire; shows main keyboard
+2. **Connect Hyperliquid** — paste API secret + addresses (encrypted via ROFL)
+3. **Trade** — Manual (from latest signal) or Auto-trade (scheduler)
+4. **Risk and Portfolio** — adjust caps, view balances, close all
+
+---
+
+## Related Questions
+
+- [How does ZkAGI integrate with the Solana Agent Kit?](/docs/getting-started/ZkAGI%20OS/Economic%20Space/solana-agent-kit#how-does-zkagi-integrate-with-the-solana-agent-kit)
+- [What is ZK Heart Health?](/docs/Agents/healthcare#what-is-zk-heart-health)
+- [How do I use the Zynapse API?](/docs/getting-started/zynapse#how-do-i-authenticate-with-the-zynapse-api)
+
+<Head>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the Oasis ROFL Hyperliquid Trading Agent?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Oasis ROFL Hyperliquid Trading Agent is a Telegram-based trading bot that registers on Oasis Sapphire (testnet) and executes perpetual futures orders on Hyperliquid with TEE-backed secret handling. It stores encrypted strategies via AES-GCM with keys managed inside a ROFL enclave."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the Oasis trading agent handle security?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Oasis trading agent encrypts all secrets end-to-end before persistence, with only the ROFL enclave holding decryption keys. API keys are scoped to Hyperliquid perps with least-privilege access, and users are prompted to delete sensitive messages after onboarding."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the future scope of the Oasis trading agent?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Future development includes ZK attestations that trades respect user risk limits without revealing positions, wallet-less onboarding via session keys, multi-venue routing beyond Hyperliquid, an encrypted strategy marketplace, invariant guards, compliance hooks, and a mobile PWA."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the user journey for the Oasis Telegram trading agent?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The user journey starts with /start in Telegram which registers the agent on Sapphire, then users connect their Hyperliquid wallet by pasting API secrets encrypted via ROFL, trade manually or via auto-trade, and manage risk settings and portfolio views."
+        }
+      }
+    ]
+  })}
+  </script>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Oasis ROFL Hyperliquid Telegram Trading Agent",
+    "proficiencyLevel": "Advanced",
+    "about": { "@type": "SoftwareApplication", "name": "ZkAGI" },
+    "dateModified": "2026-03-11"
+  })}
+  </script>
+</Head>

@@ -5,7 +5,7 @@ slug: /          # makes this the docs root: /docs/
 sidebar_position: 1
 ---
 
-# Introduction
+import Head from '@docusaurus/Head';
 
 <figure>
   <img
@@ -16,16 +16,19 @@ sidebar_position: 1
   <figcaption></figcaption>
 </figure>
 
-ZkAGI (Zero-Knowledge Artificial General Intelligence) is a framework designed to advance decentralized physical infrastructure networks (DePIN) by promoting privacy-preserving AI technologies. Its primary objective is to incentivize GPU providers, model trainers, AI developers, and data owners to participate in a secure ecosystem. ZkAGI achieves this through the integration of federated learning and zero-knowledge proofs, ensuring that AI model inference and data remain private.
+## What is ZkAGI? {#what-is-zkagi}
 
-### Key features of ZkAGI include:
+<p className="snippet-answer">ZkAGI (Zero-Knowledge Artificial General Intelligence) is a framework designed to advance decentralized physical infrastructure networks (DePIN) by promoting privacy-preserving AI technologies. It incentivizes GPU providers, model trainers, AI developers, and data owners to participate in a secure ecosystem through federated learning and zero-knowledge proofs.</p>
 
-- Privacy-preserving AI using cryptographic techniques for zero-leakage model inference.
-- Decentralized AI model training and inference using GPU networks across a global scale.
-- Zero-Knowledge Machine Learning (ZKML) for verifiable AI execution without revealing sensitive data.
-- Utilization of Transformer-based Large Language Models (LLMs) for accurate natural language processing.
+- **Privacy-preserving AI** using cryptographic techniques for zero-leakage model inference
+- **Decentralized AI model training and inference** using GPU networks across a global scale
+- **Zero-Knowledge Machine Learning (ZKML)** for verifiable AI execution without revealing sensitive data
+- **Transformer-based Large Language Models (LLMs)** for accurate natural language processing
+- Integrates **federated learning** and **zero-knowledge proofs** to keep AI model inference and data private
 
-### Architecture
+## What does the ZkAGI architecture look like? {#what-does-the-zkagi-architecture-look-like}
+
+<p className="snippet-answer">The ZkAGI integration architecture connects decentralized GPU networks, privacy-preserving cryptographic layers, and AI model hosting into a unified system. It enables secure, verifiable AI inference across a distributed infrastructure.</p>
 
 <figure>
   <img
@@ -34,3 +37,33 @@ ZkAGI (Zero-Knowledge Artificial General Intelligence) is a framework designed t
   />
   <figcaption><p>Overview of the ZkAGI Integration Architecture</p></figcaption>
 </figure>
+
+## Related Questions {#related-questions}
+
+- [What is ZkAGI OS?](/docs/getting-started/ZkAGI%20OS/about#what-is-zkagi-os)
+- [How does ZkAGI OS work?](/docs/getting-started/ZkAGI%20OS/how-zkagi-os-works#how-does-zkagi-os-work)
+- [How do I authenticate with the Zynapse API?](/docs/getting-started/zynapse#how-do-i-authenticate-with-the-zynapse-api)
+- [How do I get started with ZkTerminal?](/docs/getting-started#how-do-i-get-started-with-zkterminal)
+
+<Head>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is ZkAGI?", "acceptedAnswer": { "@type": "Answer", "text": "ZkAGI (Zero-Knowledge Artificial General Intelligence) is a framework designed to advance decentralized physical infrastructure networks (DePIN) by promoting privacy-preserving AI technologies. It incentivizes GPU providers, model trainers, AI developers, and data owners to participate in a secure ecosystem through federated learning and zero-knowledge proofs." } },
+      { "@type": "Question", "name": "What does the ZkAGI architecture look like?", "acceptedAnswer": { "@type": "Answer", "text": "The ZkAGI integration architecture connects decentralized GPU networks, privacy-preserving cryptographic layers, and AI model hosting into a unified system. It enables secure, verifiable AI inference across a distributed infrastructure." } }
+    ]
+  })}
+  </script>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "What is ZkAGI?",
+    "proficiencyLevel": "Advanced",
+    "about": { "@type": "SoftwareApplication", "name": "ZkAGI" },
+    "dateModified": "2026-03-11"
+  })}
+  </script>
+</Head>

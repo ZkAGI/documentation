@@ -5,312 +5,397 @@ slug: /getting-started/zkterminal/prompt-commands
 sidebar_position: 1
 ---
 
-# Prompt Commands
+import Head from '@docusaurus/Head';
 
-This page documents the available **ZkTerminal / ZkSurfer AI** chat commands and how to use them.
+## How do I create an agent in ZkTerminal? {#how-do-i-create-an-agent-in-zkterminal}
 
----
+<p className="snippet-answer">Use the `/create-agent` command followed by an image description to generate a unique meme image that becomes the foundation for your agent's meme coin name and description. Image generation typically takes less than 5 minutes.</p>
 
-## `/create-agent`
+**Command:** `/create-agent`
 
-**Description**  
-Initiates creation of an agent by generating a unique meme image. This image becomes the foundation for generating the meme coin’s **name** and **description**.
-
-**Usage**
 ```bash
 /create-agent [details for image generation]
 ```
 
-**Details required**
-- **Image Description**: Provide specific instructions or themes for the meme image to be generated.
-
-**Notes**
-- Image generation typically takes **< 5 minutes**.
+- **Image Description**: Provide specific instructions or themes for the meme image to be generated
+- Image generation typically takes **< 5 minutes**
 - After generation, you can:
-  - **Download ZKProof**: Click **Download Proof** to obtain a cryptographic proof of the image.
-  - **Launch Agent**: Click **Launch Agent** to proceed with creating the agent.
+  - **Download ZKProof**: Click **Download Proof** to obtain a cryptographic proof of the image
+  - **Launch Agent**: Click **Launch Agent** to proceed with creating the agent
 
 ---
 
-## `/character-json`
+## How do I configure an agent's character JSON in ZkTerminal? {#how-do-i-configure-an-agents-character-json-in-zkterminal}
 
-**Description**  
-Generates and manages a **JSON configuration** for the selected agent using training data and the agent’s image. Also supports an **edit mode** to modify the JSON; interactions during edit mode are captured as additional training data.
+<p className="snippet-answer">Use the `/character-json` command to generate and manage a JSON configuration for your selected agent using training data and the agent's image. The command includes an edit mode where all interactions are captured as additional training data.</p>
 
-**Usage**
+**Command:** `/character-json`
+
 ```bash
 /character-json
 ```
 
-**Process**
-1. **Ticker Selection**
-   - **Prerequisite**: Ensure an agent/ticker is selected using `/select`.
-   - **If none selected**: The system prompts you to run `/select`.
-2. **JSON Generation**
-   - Generates a JSON file for the selected agent using training data + image.
-3. **Edit Mode Activation**
-   - Enter edit mode to modify the generated JSON.
-   - **While in edit mode**: All prompts and responses are captured as future training data.
-4. **Exit Edit Mode**
-   - When edit mode is turned off, the updated JSON is displayed.
-5. **User Actions**
-   - **Confirm**: Finalize the JSON configuration.
-   - **Keep Editing**: Re-enter edit mode for more changes.
-6. **Confirmation & Storage**
-   - On confirmation, the JSON is stored securely.
-   - **Automated Tweets**: After a few minutes, the system begins triggering tweets based on the configured Twitter handle and credentials.
+**Process:**
 
-**Notes**
-- **Mandatory**: A ticker must be selected (`/select`) before using `/character-json`.
-- **Edit Mode Benefits**: Iteratively improves the agent using your interactions.
-- **Twitter Credentials**: Ensure tokens are set via `/token` to enable automated tweeting.
-- **Dynamic Behavior**: JSON can be tuned to align agent behavior with desired functionality.
+1. **Ticker Selection** — Ensure an agent/ticker is selected using `/select`; if none selected, the system prompts you to run `/select`
+2. **JSON Generation** — Generates a JSON file for the selected agent using training data + image
+3. **Edit Mode Activation** — Enter edit mode to modify the generated JSON; all prompts and responses during edit mode are captured as future training data
+4. **Exit Edit Mode** — When edit mode is turned off, the updated JSON is displayed
+5. **User Actions** — **Confirm** to finalize the JSON configuration, or **Keep Editing** to re-enter edit mode
+6. **Confirmation & Storage** — On confirmation, the JSON is stored securely; after a few minutes, the system begins triggering tweets based on the configured Twitter handle and credentials
 
-**Example Workflow**
-1. **Select an agent**
+**Key details:**
+
+- **Mandatory**: A ticker must be selected (`/select`) before using `/character-json`
+- **Edit Mode Benefits**: Iteratively improves the agent using your interactions
+- **Twitter Credentials**: Ensure tokens are set via `/token` to enable automated tweeting
+- **Dynamic Behavior**: JSON can be tuned to align agent behavior with desired functionality
+
+**Example Workflow:**
+
+1. Select an agent:
    ```bash
    /select
    ```
    Choose the desired agent from the displayed table.
 
-2. **Generate the character JSON**
+2. Generate the character JSON:
    ```bash
    /character-json
    ```
-   If no agent is selected, you’ll be prompted to run `/select`.
+   If no agent is selected, you will be prompted to run `/select`.
 
-3. **(Optional) Edit Mode**
-   - Modify the JSON; your interactions are stored as training data.
+3. (Optional) Enter edit mode and modify the JSON; your interactions are stored as training data.
 
-4. **Confirm or Keep Editing**
-   - After exiting edit mode, either **Confirm** the JSON or continue editing.
+4. After exiting edit mode, either **Confirm** the JSON or continue editing.
 
-5. **Finalize & Trigger Tweets**
-   - On confirmation, JSON is stored and tweeting begins (if `/token` is configured).
+5. On confirmation, JSON is stored and tweeting begins (if `/token` is configured).
 
 ---
 
-## `/launch`
+## How do I launch an agent on pump.fun using ZkTerminal? {#how-do-i-launch-an-agent-on-pumpfun-using-zkterminal}
 
-**Description**  
-Launches the locally created meme coin agent on **pump.fun**.
+<p className="snippet-answer">Use the `/launch` command to launch your locally created meme coin agent on pump.fun. The agent must first be created via `/create-agent` and selected via `/select`.</p>
 
-**Usage**
+**Command:** `/launch`
+
 ```bash
 /launch
 ```
 
-**Prerequisites**
-- The agent must have been created locally via `/create-agent`.
-- An agent must be selected via `/select`.
-
-**Notes**
-- If no agent is selected, run `/select`.
-- Launch flow displays a table with a **launch link** or allows you to enter a **coin ID**.
+- **Prerequisites**: The agent must have been created locally via `/create-agent` and selected via `/select`
+- If no agent is selected, run `/select` first
+- Launch flow displays a table with a **launch link** or allows you to enter a **coin ID**
 
 ---
 
-## `/select`
+## How do I select an agent in ZkTerminal? {#how-do-i-select-an-agent-in-zkterminal}
 
-**Description**  
-Selects an existing meme coin agent for subsequent operations (launching, tweeting, etc.).
+<p className="snippet-answer">Use the `/select` command to choose an existing meme coin agent for subsequent operations like launching, tweeting, and configuration. The command displays a table of available agents from which you select by ID.</p>
 
-**Usage**
+**Command:** `/select`
+
 ```bash
 /select
 ```
 
-**Process**
-1. Displays a table of available agents.
-2. Locate the desired agent and note its **ID**.
-3. Enter the agent’s ID when prompted to select it.
-4. The selected agent appears in the header for quick reference.
-
-**Notes**
-- Always verify the selected agent to avoid acting on the wrong coin.
+- Displays a table of available agents
+- Locate the desired agent and note its **ID**
+- Enter the agent's ID when prompted to select it
+- The selected agent appears in the header for quick reference
+- Always verify the selected agent to avoid acting on the wrong coin
 
 ---
 
-## `/generate`
+## How do I generate tweets for my agent in ZkTerminal? {#how-do-i-generate-tweets-for-my-agent-in-zkterminal}
 
-**Description**  
-Generates a specified number of tweets for the **selected** agent.
+<p className="snippet-answer">Use the `/generate` command followed by the number of tweets you want to create for the currently selected agent. Generation time scales with the number of tweets requested.</p>
 
-**Usage**
+**Command:** `/generate`
+
 ```bash
 /generate [number_of_tweets]
 ```
 
-**Example**
+**Example:**
+
 ```bash
 /generate 5
 ```
 
-**Process**
-1. Ensure an agent is selected (`/select`).
-2. Provide the number of tweets to generate.
-3. Wait a few minutes; generated tweets appear in a table.
-
-**Notes**
-- Generation time scales with the requested number of tweets.
+- Ensure an agent is selected (`/select`) before generating
+- Provide the number of tweets to generate
+- Wait a few minutes; generated tweets appear in a table
+- Generation time scales with the requested number of tweets
 
 ---
 
-## `/save` & `/saves`
+## How do I save generated tweets in ZkTerminal? {#how-do-i-save-generated-tweets-in-zkterminal}
 
-**Description**  
-Saves generated tweets for future posting.
+<p className="snippet-answer">Use `/save` to save a single generated tweet by its ID, or `/saves` to save multiple tweets at once by providing a comma-separated list of IDs. Saved tweets can later be posted with `/post`, `/tweet`, or `/tweets`.</p>
 
-**Usage — single tweet**
+**Commands:** `/save` and `/saves`
+
+**Save a single tweet:**
+
 ```bash
 /save [tweet_id]
 ```
 
-**Example**
+**Example:**
+
 ```bash
 /save 3
 ```
 
-**Usage — multiple tweets**
+**Save multiple tweets:**
+
 ```bash
 /saves [id1,id2,id3,...]
 ```
 
-**Example**
+**Example:**
+
 ```bash
 /saves 1,3,4,7
 ```
 
-**Process**
-1. After `/generate`, note tweet IDs from the table.
-2. Use `/save` for one tweet, or `/saves` for multiple.
-
-**Notes**
-- Saved tweets can later be posted with `/post`, `/tweet`, or `/tweets`.
+- After `/generate`, note tweet IDs from the table
+- Use `/save` for one tweet, or `/saves` for multiple
+- Saved tweets can later be posted with `/post`, `/tweet`, or `/tweets`
 
 ---
 
-## `/post`
+## How do I view saved tweets in ZkTerminal? {#how-do-i-view-saved-tweets-in-zkterminal}
 
-**Description**  
-Displays a list of **saved** tweets ready to be posted.
+<p className="snippet-answer">Use the `/post` command to display a list of saved tweets that are ready to be posted. From this list you can choose to post individual or multiple tweets.</p>
 
-**Usage**
+**Command:** `/post`
+
 ```bash
 /post
 ```
 
-**Process**
-1. Ensure the desired agent is selected.
-2. Running `/post` shows a table of saved tweets.
-3. Choose to post individual or multiple tweets.
-
-**Notes**
-- Make sure your **Twitter tokens** are set via `/token` before posting.
+- Ensure the desired agent is selected
+- Running `/post` shows a table of saved tweets
+- Choose to post individual or multiple tweets from the list
+- Make sure your **Twitter tokens** are set via `/token` before posting
 
 ---
 
-## `/tweet` & `/tweets`
+## How do I post tweets from ZkTerminal? {#how-do-i-post-tweets-from-zkterminal}
 
-**Description**  
-Posts saved tweets to Twitter.
+<p className="snippet-answer">Use `/tweet` to post a single saved tweet by its ID, or `/tweets` to post multiple saved tweets at once using a comma-separated list of IDs. Twitter access tokens must be configured via `/token` before posting.</p>
 
-**Usage — single tweet**
+**Commands:** `/tweet` and `/tweets`
+
+**Post a single tweet:**
+
 ```bash
 /tweet [tweet_id]
 ```
 
-**Example**
+**Example:**
+
 ```bash
 /tweet 2
 ```
 
-**Usage — multiple tweets**
+**Post multiple tweets:**
+
 ```bash
 /tweets [id1,id2,id3,...]
 ```
 
-**Example**
+**Example:**
+
 ```bash
 /tweets 1,4,5
 ```
 
-**Process**
-1. Use `/post` to view saved tweets and note their IDs.
-2. Execute `/tweet` or `/tweets` to post them.
-
-**Notes**
-- Requires Twitter access token/key configured via `/token`.
+- Use `/post` to view saved tweets and note their IDs
+- Execute `/tweet` or `/tweets` to post them
+- Requires Twitter access token/key configured via `/token`
 
 ---
 
-## `/token`
+## How do I set up Twitter tokens in ZkTerminal? {#how-do-i-set-up-twitter-tokens-in-zkterminal}
 
-**Description**  
-Stores Twitter access **tokens** and **keys** for automated tweeting.
+<p className="snippet-answer">Use the `/token` command to open a credential form where you enter your Twitter Access Token and Access Key. These tokens are required for all tweet-posting commands including `/post`, `/tweet`, and `/tweets`.</p>
 
-**Usage**
+**Command:** `/token`
+
 ```bash
 /token
 ```
 
-**Process**
-1. Run `/token` to open the credential form.
-2. Enter your **Twitter Access Token** and **Access Key**.
-3. Submit to save the tokens securely.
-
-**Notes**
-- Tokens are required for `/post`, `/tweet`, `/tweets`.
-- Keep your tokens confidential.
+- Run `/token` to open the credential form
+- Enter your **Twitter Access Token** and **Access Key**
+- Submit to save the tokens securely
+- Tokens are required for `/post`, `/tweet`, `/tweets`
+- Keep your tokens confidential
 
 ---
 
-## `/image gen`
+## How do I generate images in ZkTerminal? {#how-do-i-generate-images-in-zkterminal}
 
-**Description**  
-Generates images from textual descriptions.
+<p className="snippet-answer">Use the `/image gen` command followed by a detailed text description to generate images from text. Generated images can enrich your agent's brand and content.</p>
 
-**Usage**
+**Command:** `/image gen`
+
 ```bash
 /image gen [image_description]
 ```
 
-**Example**
+**Example:**
+
 ```bash
 /image gen A funny cat wearing sunglasses
 ```
 
-**Process**
-1. Enter a detailed description.
-2. The system generates an image matching your prompt.
-
-**Notes**
-- Generated images can enrich your agent’s brand and content.
+- Enter a detailed description of the image you want
+- The system generates an image matching your prompt
+- Generated images can enrich your agent's brand and content
 
 ---
 
-## `/ugc`
+## How do I generate user content (UGC) in ZkTerminal? {#how-do-i-generate-user-content-ugc-in-zkterminal}
 
-**Description**  
-Generates user-generated content for **selected characters**, enabling personalized interactions and scenarios.
+<p className="snippet-answer">Use the `/ugc` command with a character name and a prompt to generate personalized user-generated content featuring selected characters. No prerequisites are needed — it can be used directly for engagement and storytelling.</p>
 
-**Usage**
+**Command:** `/ugc`
+
 ```bash
 /ugc [character] [prompt]
 ```
 
-**Example**
+**Example:**
+
 ```bash
 /ugc Landwolf leads an adventurous quest through the enchanted forest
 ```
 
-**Process**
-1. **Initiate**: Enter `/ugc` in chat.
-2. **Select Character**: e.g., *Landwolf*, *Ponke*.
-3. **Enter Prompt**: Describe what you want the character to do/be.
-4. **Generate**: Content is created featuring the selected character.
+- **Initiate**: Enter `/ugc` in chat
+- **Select Character**: e.g., *Landwolf*, *Ponke*
+- **Enter Prompt**: Describe what you want the character to do/be
+- **Generate**: Content is created featuring the selected character
+- **No prerequisites** — can be used directly
+- **Versatile** — useful for engagement and storytelling around your agent
+- **Customizable** — supports a wide range of creative prompts
 
-**Notes**
-- **No prerequisites** — can be used directly.
-- **Versatile** — useful for engagement and storytelling around your agent.
-- **Customizable** — supports a wide range of creative prompts.
+---
+
+## Related Questions
+
+- [How do I connect with ZkTerminal?](/docs/getting-started/zkterminal/authentication#how-do-i-connect-with-zkterminal)
+- [How do I get started with ZkTerminal?](/docs/getting-started#how-do-i-get-started-with-zkterminal)
+- [How does ZkAGI handle healthcare use cases?](/docs/Agents/healthcare#what-is-zk-heart-health)
+
+<Head>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I create an agent in ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the /create-agent command followed by an image description to generate a unique meme image that becomes the foundation for your agent's meme coin name and description. Image generation typically takes less than 5 minutes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I configure an agent's character JSON in ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the /character-json command to generate and manage a JSON configuration for your selected agent using training data and the agent's image. The command includes an edit mode where all interactions are captured as additional training data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I launch an agent on pump.fun using ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the /launch command to launch your locally created meme coin agent on pump.fun. The agent must first be created via /create-agent and selected via /select."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I select an agent in ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the /select command to choose an existing meme coin agent for subsequent operations like launching, tweeting, and configuration. The command displays a table of available agents from which you select by ID."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I generate tweets for my agent in ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the /generate command followed by the number of tweets you want to create for the currently selected agent. Generation time scales with the number of tweets requested."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I save generated tweets in ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use /save to save a single generated tweet by its ID, or /saves to save multiple tweets at once by providing a comma-separated list of IDs. Saved tweets can later be posted with /post, /tweet, or /tweets."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I view saved tweets in ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the /post command to display a list of saved tweets that are ready to be posted. From this list you can choose to post individual or multiple tweets."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I post tweets from ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use /tweet to post a single saved tweet by its ID, or /tweets to post multiple saved tweets at once using a comma-separated list of IDs. Twitter access tokens must be configured via /token before posting."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I set up Twitter tokens in ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the /token command to open a credential form where you enter your Twitter Access Token and Access Key. These tokens are required for all tweet-posting commands including /post, /tweet, and /tweets."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I generate images in ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the /image gen command followed by a detailed text description to generate images from text. Generated images can enrich your agent's brand and content."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I generate user content (UGC) in ZkTerminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the /ugc command with a character name and a prompt to generate personalized user-generated content featuring selected characters. No prerequisites are needed — it can be used directly for engagement and storytelling."
+        }
+      }
+    ]
+  })}
+  </script>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "ZkTerminal Prompt Commands",
+    "proficiencyLevel": "Advanced",
+    "about": { "@type": "SoftwareApplication", "name": "ZkAGI" },
+    "dateModified": "2026-03-11"
+  })}
+  </script>
+</Head>

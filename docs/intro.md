@@ -1,69 +1,72 @@
 ---
 id: introduction
-title: Introduction
-slug: /          # makes this the docs root: /docs/
+title: Welcome
+slug: /
 sidebar_position: 1
 ---
 
-import Head from '@docusaurus/Head';
+# Privacy you can prove, not just promise
 
-<figure>
-  <img
-    src="https://4269003536-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2Fz2ewhfaUwAaayupPjFcz%2Fuploads%2FeYTzUqMbN13iDKQJFvsp%2FGroup%2032.png?alt=media&#x26;token=ae315ae6-815e-445f-bfe3-ac678f020391"
-    alt="ZkAGI"
-    width="280"
-  />
-  <figcaption></figcaption>
-</figure>
+Some data can't leave your control. Patient records, trading signals, contracts,
+the documents your legal team loses sleep over. It still needs AI.
 
-## What is ZkAGI? {#what-is-zkagi}
+zkAGI is infrastructure for running AI on exactly that kind of data. The idea
+fits in one sentence:
 
-<p className="snippet-answer">ZkAGI (Zero-Knowledge Artificial General Intelligence) is a framework designed to advance decentralized physical infrastructure networks (DePIN) by promoting privacy-preserving AI technologies. It incentivizes GPU providers, model trainers, AI developers, and data owners to participate in a secure ecosystem through federated learning and zero-knowledge proofs.</p>
+> **You define the trust domain. We enforce it. Every call returns a receipt.**
 
-- **Privacy-preserving AI** using cryptographic techniques for zero-leakage model inference
-- **Decentralized AI model training and inference** using GPU networks across a global scale
-- **Zero-Knowledge Machine Learning (ZKML)** for verifiable AI execution without revealing sensitive data
-- **Transformer-based Large Language Models (LLMs)** for accurate natural language processing
-- Integrates **federated learning** and **zero-knowledge proofs** to keep AI model inference and data private
+Different legal teams anchor trust in different places. Some accept a chip
+vendor's attestation (silicon). Some only accept cryptography (math). Many want
+both. zkAGI doesn't pick for you. You choose the anchor your compliance
+framework already approves, our compiler assembles the stack that enforces it,
+and you get an OpenAI-compatible endpoint hosted inside a perimeter you drew.
 
-## What does the ZkAGI architecture look like? {#what-does-the-zkagi-architecture-look-like}
+| You decide | We enforce | You can check |
+|---|---|---|
+| **The anchor**: silicon, math, or both | The compiler picks the techniques that hold up for your workload | Every inference returns a verifiable receipt |
+| **The tier**: Standard, Private, or Sovereign | Stronger tiers trade speed for stronger guarantees | Receipts record the tier that actually ran |
+| **The perimeter**: on-prem, one region, or spread across regions | Compute physically stays inside your boundary | Receipts confirm nothing left it in the clear |
 
-<p className="snippet-answer">The ZkAGI integration architecture connects decentralized GPU networks, privacy-preserving cryptographic layers, and AI model hosting into a unified system. It enables secure, verifiable AI inference across a distributed infrastructure.</p>
+## Where to go from here
 
-<figure>
-  <img
-    src="https://4269003536-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2Fz2ewhfaUwAaayupPjFcz%2Fuploads%2FhXMSfqfiubSvjmAYgyvX%2Fimage.png?alt=media&#x26;token=682d9be4-96f2-4a93-9b71-29d466e09540"
-    alt="Overview of the ZkAGI Integration Architecture"
-  />
-  <figcaption><p>Overview of the ZkAGI Integration Architecture</p></figcaption>
-</figure>
+- **Deciding whether to trust us?** Start with [Trust domains](/docs/trust/trust-domains), then read the [Security model](/docs/trust-center/security-model) and the [Status board](/docs/trust-center/status). We wrote them for skeptics.
+- **Building today?** Jump to the [Quickstart](/docs/api/quickstart). If you can call OpenAI, you can call this.
+- **Preparing for an audit?** [Receipts](/docs/platform/receipts) explains the compliance artifact. We help you prepare, though the audit stays yours.
+- **Curious how a model gets split for privacy?** [The Altaica compiler](/docs/platform/compiler) is the most fun page in here.
 
-## Related Questions {#related-questions}
+## Two honest things before you read on
 
-- [What is ZkAGI OS?](/docs/getting-started/ZkAGI%20OS/about#what-is-zkagi-os)
-- [How does ZkAGI OS work?](/docs/getting-started/ZkAGI%20OS/how-zkagi-os-works#how-does-zkagi-os-work)
-- [How do I authenticate with the Zynapse API?](/docs/getting-started/zynapse#how-do-i-authenticate-with-the-zynapse-api)
-- [How do I get started with ZkTerminal?](/docs/getting-started#how-do-i-get-started-with-zkterminal)
+**First: some of this is live, some is active R&D.** We're a research lab as
+much as a product company. Every page in these docs carries a status pill:
 
-<Head>
-  <script type="application/ld+json">
-  {JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      { "@type": "Question", "name": "What is ZkAGI?", "acceptedAnswer": { "@type": "Answer", "text": "ZkAGI (Zero-Knowledge Artificial General Intelligence) is a framework designed to advance decentralized physical infrastructure networks (DePIN) by promoting privacy-preserving AI technologies. It incentivizes GPU providers, model trainers, AI developers, and data owners to participate in a secure ecosystem through federated learning and zero-knowledge proofs." } },
-      { "@type": "Question", "name": "What does the ZkAGI architecture look like?", "acceptedAnswer": { "@type": "Answer", "text": "The ZkAGI integration architecture connects decentralized GPU networks, privacy-preserving cryptographic layers, and AI model hosting into a unified system. It enables secure, verifiable AI inference across a distributed infrastructure." } }
-    ]
-  })}
-  </script>
-  <script type="application/ld+json">
-  {JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "headline": "What is ZkAGI?",
-    "proficiencyLevel": "Advanced",
-    "about": { "@type": "SoftwareApplication", "name": "ZkAGI" },
-    "dateModified": "2026-03-11"
-  })}
-  </script>
-</Head>
+<p>
+  <span className="zk-status zk-status--live">● Live</span>&nbsp;&nbsp;
+  <span className="zk-status zk-status--rnd">◐ Active R&D</span>&nbsp;&nbsp;
+  <span className="zk-status zk-status--engagement">◇ Configured per engagement</span>
+</p>
+
+If a page says R&D, believe it. The [Status board](/docs/trust-center/status)
+is the single source of truth, and before you commit to anything we'll tell you
+plainly which pieces are ready for your use case.
+
+**Second: your audit stays your audit.** zkAGI is not an audit firm and our
+inference service is not itself certified against HIPAA, GDPR or the EU AI Act.
+Compliance responsibility stays with you. Our receipts and documentation exist
+to make that job easier, and we'll help you prepare. The
+[Disclosures](/docs/trust-center/disclosures) page says all of this properly.
+
+:::info Nothing here is legal advice
+These docs describe technology, not legal guarantees. Specific commitments,
+availability and service levels live in your agreement with zkAGI, and that
+agreement is what governs.
+:::
+
+## A note of thanks
+
+zkAGI has been built in the open since 2019, and it exists because a community
+of node runners, contributors, agent builders and early believers kept showing
+up: through pivots, through bear markets, through the long unglamorous middle
+of research. If you ran a GPU, filed an issue, built an agent, or just told a
+friend about us: thank you. Truly. This chapter of the work is quieter and more
+institutional, but it stands on everything you helped prove. The door is always
+open in [our community channels](/contact).

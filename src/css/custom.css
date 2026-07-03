@@ -1,37 +1,225 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * zkAGI docs theme — "Command Center"
+ * Obsidian navy base, cobalt signal accent, teal for verification.
+ * Dark is the default mode; light ("Boardroom") stays clean and paper-like.
  */
 
-/* You can override the default Infima variables here. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap');
+
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  /* Boardroom (light) */
+  --ifm-color-primary: #0052ff;
+  --ifm-color-primary-dark: #004ae6;
+  --ifm-color-primary-darker: #0046d9;
+  --ifm-color-primary-darkest: #0039b3;
+  --ifm-color-primary-light: #1a63ff;
+  --ifm-color-primary-lighter: #266bff;
+  --ifm-color-primary-lightest: #4d85ff;
+  --ifm-background-color: #f7f9fc;
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'Source Code Pro', ui-monospace, monospace;
+  --ifm-heading-font-weight: 700;
+  --ifm-code-font-size: 90%;
+  --ifm-navbar-background-color: rgba(247, 249, 252, 0.85);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 82, 255, 0.08);
+
+  --zk-obsidian: #0a192f;
+  --zk-slate: #112240;
+  --zk-cobalt: #0052ff;
+  --zk-cobalt-ink: #0052ff;   /* accent for text; brightened in dark */
+  --zk-teal: #00a86b;
+  --zk-cool: #ccd6f6;
+  --zk-amber: #d97706;
+  --zk-hairline: rgba(10, 25, 47, 0.1);
+  --zk-card: #ffffff;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  /* Command Center (dark) */
+  --ifm-color-primary: #70a9ff;
+  --ifm-color-primary-dark: #4d91ff;
+  --ifm-color-primary-darker: #3b86ff;
+  --ifm-color-primary-darkest: #0563ff;
+  --ifm-color-primary-light: #93bdff;
+  --ifm-color-primary-lighter: #a5c8ff;
+  --ifm-color-primary-lightest: #d0e2ff;
+  --ifm-background-color: #0a192f;
+  --ifm-background-surface-color: #112240;
+  --ifm-navbar-background-color: rgba(10, 25, 47, 0.8);
+  --ifm-footer-background-color: #081426;
+  --docusaurus-highlighted-code-line-bg: rgba(112, 169, 255, 0.12);
+
+  --zk-cobalt-ink: #70a9ff;
+  --zk-hairline: rgba(204, 214, 246, 0.12);
+  --zk-card: #112240;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.navbar {
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--zk-hairline);
+  box-shadow: none;
+}
+
+.navbar__title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Contact CTA in the navbar */
+.navbar .zk-navbar-cta {
+  background: var(--zk-cobalt);
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-weight: 600;
+  transition: background 0.25s ease, transform 0.15s ease;
+}
+.navbar .zk-navbar-cta:hover {
+  background: #0042d6;
+  transform: translateY(-1px);
+}
+
+/* ---------- Status pills ---------- */
+.zk-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid;
+  vertical-align: middle;
+  margin-bottom: 0.75rem;
+}
+.zk-status--live {
+  color: var(--zk-teal);
+  border-color: rgba(0, 168, 107, 0.35);
+  background: rgba(0, 168, 107, 0.08);
+}
+.zk-status--rnd {
+  color: var(--zk-amber);
+  border-color: rgba(217, 119, 6, 0.35);
+  background: rgba(217, 119, 6, 0.08);
+}
+[data-theme='dark'] .zk-status--rnd { color: #f59e0b; }
+.zk-status--engagement {
+  color: var(--zk-cobalt-ink);
+  border-color: rgba(0, 82, 255, 0.3);
+  background: rgba(0, 82, 255, 0.07);
+}
+[data-theme='dark'] .zk-status--engagement {
+  border-color: rgba(112, 169, 255, 0.35);
+  background: rgba(112, 169, 255, 0.08);
+}
+
+/* ---------- Embedded concept videos ---------- */
+.zk-video {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  margin: 1.5rem auto 2rem;
+  border-radius: 14px;
+  border: 1px solid var(--zk-hairline);
+  box-shadow: 0 24px 70px -30px rgba(0, 82, 255, 0.35);
+  background: #081426;
+}
+
+/* ---------- Docs typography ---------- */
+.markdown h1 {
+  letter-spacing: -0.025em;
+}
+.markdown > h2 {
+  margin-top: 2.6rem;
+  letter-spacing: -0.015em;
+}
+.markdown blockquote {
+  border-left: 3px solid var(--zk-cobalt);
+  background: rgba(0, 82, 255, 0.05);
+  border-radius: 0 10px 10px 0;
+  font-weight: 500;
+}
+[data-theme='dark'] .markdown blockquote {
+  border-left-color: #70a9ff;
+  background: rgba(112, 169, 255, 0.07);
+}
+
+/* tables — keep Docusaurus's scrollable block behavior (mobile!) but style it */
+.markdown table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--zk-hairline);
+  border-radius: 12px;
+}
+@media (min-width: 997px) {
+  .markdown table { display: table; overflow: hidden; }
+}
+.markdown table th {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* subtle starfield behind dark-mode content — the space-age whisper */
+[data-theme='dark'] .main-wrapper {
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(204, 214, 246, 0.35) 0, transparent 100%),
+    radial-gradient(1px 1px at 78% 12%, rgba(204, 214, 246, 0.22) 0, transparent 100%),
+    radial-gradient(1.5px 1.5px at 55% 65%, rgba(112, 169, 255, 0.2) 0, transparent 100%),
+    radial-gradient(1px 1px at 32% 84%, rgba(204, 214, 246, 0.18) 0, transparent 100%),
+    radial-gradient(1px 1px at 90% 55%, rgba(0, 168, 107, 0.2) 0, transparent 100%);
+  background-attachment: fixed;
+}
+
+/* ---------- Footer ---------- */
+.footer--dark {
+  --ifm-footer-background-color: #081426;
+  border-top: 1px solid var(--zk-hairline);
+}
+.footer__copyright {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  opacity: 0.75;
+  max-width: 860px;
+  margin: 1.5rem auto 0;
+  line-height: 1.7;
+}
+
+/* announcement bar */
+div[class*='announcementBar'] {
+  background: linear-gradient(90deg, #0a192f, #0c1d38 40%, #0a192f);
+  color: var(--zk-cool);
+  border-bottom: 1px solid rgba(112, 169, 255, 0.2);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+}
+div[class*='announcementBar'] a {
+  color: #70a9ff;
+  text-decoration: underline;
+}
+
+/* legacy helper kept from the old theme */
 .img-caption {
   text-align: center;
   font-size: 0.9rem;
   color: var(--ifm-color-emphasis-600);
   margin-top: 0.25rem;
+}
+
+/* reduced motion: kill the fancy stuff */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,0 +1,1716 @@
+# zkAGI — full documentation (auto-generated)
+
+> Privacy-preserving AI infrastructure. You define the trust domain (silicon,
+> mathematics, or hybrid); the Altaica compiler assembles the stack that
+> enforces it; every call returns a verifiable receipt. Swiss-governed, built
+> for peaceful civilian use in regulated industries.
+
+Canonical docs: https://docs.zkagi.ai · Main site: https://zkagi.ai
+This file concatenates every documentation page for LLM ingestion.
+
+
+
+----------------------------------------
+SOURCE: intro.md (https://docs.zkagi.ai/docs/)
+----------------------------------------
+
+---
+id: introduction
+title: Welcome
+slug: /
+sidebar_position: 1
+---
+
+# Privacy you can prove, not just promise
+
+Some data can't leave your control. Patient records, trading signals, contracts,
+the documents your legal team loses sleep over. It still needs AI.
+
+zkAGI is infrastructure for running AI on exactly that kind of data. The idea
+fits in one sentence:
+
+> **You define the trust domain. We enforce it. Every call returns a receipt.**
+
+Different legal teams anchor trust in different places. Some accept a chip
+vendor's attestation (silicon). Some only accept cryptography (math). Many want
+both. zkAGI doesn't pick for you. You choose the anchor your compliance
+framework already approves, our compiler assembles the stack that enforces it,
+and you get an OpenAI-compatible endpoint hosted inside a perimeter you drew.
+
+| You decide | We enforce | You can check |
+|---|---|---|
+| **The anchor**: silicon, math, or both | The compiler picks the techniques that hold up for your workload | Every inference returns a verifiable receipt |
+| **The tier**: Standard, Private, or Sovereign | Stronger tiers trade speed for stronger guarantees | Receipts record the tier that actually ran |
+| **The perimeter**: on-prem, one region, or spread across regions | Compute physically stays inside your boundary | Receipts confirm nothing left it in the clear |
+
+## Where to go from here
+
+- **Deciding whether to trust us?** Start with [Trust domains](/docs/trust/trust-domains), then read the [Security model](/docs/trust-center/security-model) and the [Status board](/docs/trust-center/status). We wrote them for skeptics.
+- **Building today?** Jump to the [Quickstart](/docs/api/quickstart). If you can call OpenAI, you can call this.
+- **Preparing for an audit?** [Receipts](/docs/platform/receipts) explains the compliance artifact. We help you prepare, though the audit stays yours.
+- **Curious how a model gets split for privacy?** [The Altaica compiler](/docs/platform/compiler) is the most fun page in here.
+
+## Two honest things before you read on
+
+**First: some of this is live, some is active R&D.** We're a research lab as
+much as a product company. Every page in these docs carries a status pill:
+
+<p>
+  <span className="zk-status zk-status--live">● Live</span>&nbsp;&nbsp;
+  <span className="zk-status zk-status--rnd">◐ Active R&D</span>&nbsp;&nbsp;
+  <span className="zk-status zk-status--engagement">◇ Configured per engagement</span>
+</p>
+
+If a page says R&D, believe it. The [Status board](/docs/trust-center/status)
+is the single source of truth, and before you commit to anything we'll tell you
+plainly which pieces are ready for your use case.
+
+**Second: your audit stays your audit.** zkAGI is not an audit firm and our
+inference service is not itself certified against HIPAA, GDPR or the EU AI Act.
+Compliance responsibility stays with you. Our receipts and documentation exist
+to make that job easier, and we'll help you prepare. The
+[Disclosures](/docs/trust-center/disclosures) page says all of this properly.
+
+:::info Nothing here is legal advice
+These docs describe technology, not legal guarantees. Specific commitments,
+availability and service levels live in your agreement with zkAGI, and that
+agreement is what governs.
+:::
+
+## A note of thanks
+
+zkAGI has been built in the open since 2019, and it exists because a community
+of node runners, contributors, agent builders and early believers kept showing
+up: through pivots, through bear markets, through the long unglamorous middle
+of research. If you ran a GPU, filed an issue, built an agent, or just told a
+friend about us: thank you. Truly. This chapter of the work is quieter and more
+institutional, but it stands on everything you helped prove. The door is always
+open in [our community channels](/contact).
+
+
+----------------------------------------
+SOURCE: plain-words.md (https://docs.zkagi.ai/docs/plain-words)
+----------------------------------------
+
+---
+id: plain-words
+title: In plain words
+sidebar_position: 2
+description: What zkAGI does, explained without jargon. For patients, customers, citizens, and anyone who is not an engineer.
+---
+
+# zkAGI in plain words
+
+This page explains what we do without technical language. It is written for
+patients, bank customers, citizens, journalists, and anyone else whose data
+ends up inside systems like ours. You do not need to know anything about AI
+to read it.
+
+## The problem, in one story
+
+Imagine your hospital wants to use AI to read scans faster. Helpful, right?
+But to do that, most AI services need your scan sent to a computer owned by
+someone else, in a place you will never see, under rules you never agreed to.
+The hospital gets a promise that your data is safe. A promise is all it gets.
+
+Promises are not proof. If something goes wrong, nobody can show what actually
+happened to your scan. That is the gap we work on.
+
+## What zkAGI does
+
+We build the plumbing that lets hospitals, banks and law firms use AI
+**without sending your data away**.
+
+Three simple ideas make it work:
+
+**1. The data stays home.**
+The AI runs inside the hospital's own walls, or inside a boundary the hospital
+draws on a map. Your scan does not travel to a stranger's computer.
+
+**2. The hospital picks what to trust.**
+Some organizations trust special sealed computer chips, the way you might
+trust a tamper-proof lock. Others trust mathematics, the way you might trust
+that a shredded document cannot be read. Some want both at once. We do not
+make that choice for them. Their own experts and lawyers pick, and the system
+enforces the choice.
+
+**3. Every use leaves a receipt.**
+Each time the AI runs, it produces a receipt. Like a shop receipt, it records
+what happened: what ran, where, and under which protections. An inspector can
+check that receipt later without taking anyone's word for it. That is the
+difference between "trust us" and "check for yourself."
+
+## What this means for you
+
+- If your hospital or bank uses infrastructure like this, your records can get
+  the benefits of AI **without leaving their custody**.
+- If a regulator or auditor asks "what happened to this person's data?", there
+  is a receipt to show, not just a policy document.
+- Nobody, including us, has to be blindly trusted. The protections are chosen
+  by the people responsible for your data and can be checked afterwards.
+
+## What we do not do
+
+- We do not sell or share the data that flows through the system. It is not
+  ours and we cannot read it.
+- We do not work on weapons or surveillance. The platform is built for
+  peaceful, civilian use: medicine, banking, law, research.
+- We do not claim everything is finished. Parts of this platform are still
+  research. Every page in these docs carries an honest label saying whether
+  that piece is live today or still being built.
+
+## Want to go deeper?
+
+- A gentle next step: [Trust domains](/docs/trust/trust-domains) explains the
+  "pick what you trust" idea properly.
+- The [receipts page](/docs/platform/receipts) shows what our receipts contain.
+- Questions this page did not answer? [Talk to a human](/contact). A real
+  person reads every message.
+
+
+----------------------------------------
+SOURCE: trust/perimeter.md (https://docs.zkagi.ai/docs/trust/perimeter)
+----------------------------------------
+
+---
+id: perimeter
+title: "Perimeter: decide where it runs"
+sidebar_position: 3
+description: "Draw the physical and legal boundary your compute lives inside: on-prem, one jurisdiction, or spread across regions."
+---
+
+# Perimeter: decide where it runs
+
+<span className="zk-status zk-status--engagement">◇ Configured per engagement</span>
+
+**In one breath:** the trust anchor is one axis, residency is the other. You
+draw the boundary the compute lives inside, and models are hosted within it,
+behind your own endpoint.
+
+## Three shapes of boundary
+
+### Your own cluster (on-prem)
+
+Inference runs entirely inside your data centre or GPU cluster. Nothing leaves
+the building, and you still get the same receipts. Run it on hardware you
+already own, or we help you provision it.
+
+### One jurisdiction (regional)
+
+Pin the compute to a single region so data stays inside one legal boundary.
+This is the simple answer to residency rules: if your regulator says "EU
+only", the perimeter says it too, and the receipt shows it.
+
+### Spread across regions (transcontinental)
+
+The counterintuitive one. Place operator-disjoint nodes in *different*
+countries, so that no single site, and no single country, ever holds the whole
+computation. Paired with the Sovereign tier, this turns geography itself into
+part of the privacy guarantee.
+
+## The endpoint lives inside
+
+Whatever shape you choose, the [compiler](/docs/platform/compiler) hands you an
+OpenAI-compatible endpoint **hosted inside that perimeter**:
+
+```python
+client = OpenAI(
+    base_url="https://infer.your-perimeter.ai/v1",  # yours, inside your boundary
+    api_key="zk-..."
+)
+```
+
+Your engineers keep the SDK they already use. The privacy machinery is compiled
+in underneath, not bolted on around them.
+
+:::caution Where this stands
+Perimeters are, by definition, configured per engagement: your hardware, your
+regions, your rules, agreed in writing. Regional pinning and on-prem
+deployments follow established patterns; transcontinental operator-disjoint
+meshes are deployed together with our team. See the
+[Status board](/docs/trust-center/status).
+:::
+
+**Next:** [meet the compiler that puts it together →](/docs/platform/compiler)
+
+
+----------------------------------------
+SOURCE: trust/tiers.md (https://docs.zkagi.ai/docs/trust/tiers)
+----------------------------------------
+
+---
+id: tiers
+title: "Tiers: pick your altitude"
+sidebar_position: 2
+description: "Standard, Private and Sovereign: three strengths of guarantee, chosen per workload, changeable per call."
+---
+
+# Tiers: pick your altitude
+
+<span className="zk-status zk-status--live">● Live</span> <span className="zk-status zk-status--rnd">◐ Sovereign tier: active R&D</span>
+
+**In one breath:** not every workload needs the strongest guarantee, and paying
+for one you don't need is its own kind of waste. The guarantee comes in three
+strengths, and you set it per call.
+
+## The mountain
+
+We name the tiers after altitude because that's how they feel in practice: the
+higher you climb, the stronger the guarantee and the more it costs in latency.
+
+### Tier 1 · Foothill · Standard
+
+Fast access to a wide choice of large models, with secrets scrubbed **on your
+device** before a request ever leaves it. Zero retention, lowest cost, and yes,
+still a receipt on every call.
+
+*For:* general workloads where the input isn't regulated data, but you still
+want hygiene and evidence.
+
+### Tier 2 · Ridge · Private
+
+The regulated default. The compiler picks the protection that fits your anchor
+and workload, from masked serving (the serving node never sees your raw
+inputs) to attested enclaves. Benchmarked below 0.05% token recovery, at
+interactive speed.
+
+*For:* production workloads on regulated data that need answers now.
+
+### Tier 3 · Summit · Sovereign
+
+The strongest guarantee we offer. Your data is split into pieces and sent to
+operators who don't know each other. No single one of them holds enough to
+reconstruct anything, and the result comes back with a STARK proof of correct
+execution.
+
+Two details your security team will like:
+
+1. **The splitting itself can happen on your own device.** The "trusted
+   dealer" role in MPC doesn't have to be a server you rent from us. Shares
+   can be created inside your walls before anything leaves.
+2. **The privacy is information-theoretic under non-collusion.** That's the
+   same standard assumption behind MPC everywhere: the guarantee holds as long
+   as the operators don't all conspire.
+
+*For:* batch workloads where assurance beats latency. You trade speed for proof.
+
+## Side by side
+
+| | Foothill · Standard | Ridge · Private | Summit · Sovereign |
+|---|---|---|---|
+| Speed | Interactive | Interactive | Batch |
+| Who sees raw inputs | Scrubbed on-device first | No serving node, ever | No one; data is split |
+| Token recovery | n/a (scrubbed) | < 0.05%, benchmarked | 0% effective |
+| Proof | Receipt | Receipt | Receipt + STARK |
+| Typical use | General workloads | Regulated production | Highest-assurance batch |
+
+## Changing your mind is one field
+
+The tier is a parameter on the request, not a contract negotiation:
+
+```json
+{ "task": "vision.classify", "tier": "sovereign" }
+```
+
+Run your nightly compliance batch at Summit and your customer-facing chat at
+Ridge, from the same API key.
+
+:::caution Where this stands
+Standard and Private tiers serve production traffic. The Sovereign tier's MPC
+serving path is active R&D: it runs, we benchmark it continuously, and we
+deploy it per engagement with the caveats agreed in writing. Recovery-rate
+figures are our own benchmarks, not third-party certifications. See the
+[Status board](/docs/trust-center/status) and [Disclosures](/docs/trust-center/disclosures).
+:::
+
+**Next:** [decide where it runs →](/docs/trust/perimeter)
+
+
+----------------------------------------
+SOURCE: trust/trust-domains.md (https://docs.zkagi.ai/docs/trust/trust-domains)
+----------------------------------------
+
+---
+id: trust-domains
+title: Trust domains
+sidebar_position: 1
+description: "Pick the anchor of trust your compliance framework already approves: silicon, mathematics, or both."
+---
+
+# Trust domains
+
+<span className="zk-status zk-status--engagement">◇ Configured per engagement</span>
+
+**In one breath:** a trust domain is your answer to the question "who has to be
+honest for my data to stay private?" zkAGI lets you pick that answer instead of
+inheriting ours.
+
+<video className="zk-video" autoPlay loop muted playsInline
+  src="/videos/trust-domains.mp4" title="How a trust domain is chosen and enforced" />
+
+## The question nobody asks out loud
+
+Every AI vendor asks you to trust *something*. Usually the choice is made for
+you: trust our policies, or trust our chip vendor. Your legal team never got a
+vote.
+
+We think that's backwards. Your compliance framework has already decided what
+kinds of evidence it accepts. Infrastructure should enforce that decision, not
+argue with it. So the first thing you configure on zkAGI isn't a model or a
+region. It's the anchor.
+
+## The three anchors
+
+### Silicon: trust the hardware
+
+Inference runs inside hardware-isolated enclaves. NVIDIA confidential computing
+protects the model and your data on the serving GPUs themselves, and CPU
+families like Intel TDX and AWS Nitro seal the rest of the stack. The chips
+sign an attestation of exactly what ran.
+
+*Choose this when* your auditors already accept confidential computing. It's
+the fastest anchor, at near-native speed.
+
+*What has to be honest:* the hardware vendor and their firmware.
+
+### Mathematics: trust the cryptography
+
+Your inputs are secret-shared or encrypted **before they reach any machine**,
+so no single operator ever holds anything it could reverse. Depending on the
+workload that means secure multi-party computation (MPC), secret sharing, or
+fully homomorphic encryption. The compiler picks what actually holds up, not
+what's fashionable.
+
+*Choose this when* you can't accept any hardware vendor inside your trust
+chain. The guarantee rests on math your own team can check.
+
+*What has to be honest:* not any single party. Operators must merely not *all*
+collude. And the trusted dealer that splits your data can be **your own
+device**, so the shares are created inside your walls before anything leaves.
+
+### Hybrid: trust both, layered
+
+Cryptographic privacy running inside attested hardware. If an enclave is ever
+compromised, the math still holds. If a cryptographic assumption slips, the
+silicon still isolates. Two independent layers that fail separately.
+
+*Choose this when* the workload is one you can't afford to get wrong. Common in
+healthcare, banking and legal.
+
+## What happens after you choose
+
+You don't assemble any of this yourself. You state the anchor (plus your tier
+and perimeter), and the [Altaica compiler](/docs/platform/compiler) compiles a
+serving stack that enforces it. Every call that stack serves returns a
+[receipt](/docs/platform/receipts) recording which anchor was actually in
+force. Same API, same receipt format, whichever anchor you choose.
+
+:::caution Where this stands
+The mathematics anchor (obfuscated and MPC serving) and receipts are the core
+of our research program and run in our production environments. Confidential
+hardware anchors are assembled per engagement on attested infrastructure you
+or your cloud provide. Exact configurations, and which guarantees apply to
+yours, are agreed in writing before go-live. See the
+[Status board](/docs/trust-center/status).
+:::
+
+**Next:** [pick your altitude with tiers →](/docs/trust/tiers)
+
+
+----------------------------------------
+SOURCE: platform/compiler.md (https://docs.zkagi.ai/docs/platform/compiler)
+----------------------------------------
+
+---
+id: compiler
+title: The Altaica compiler
+sidebar_position: 1
+description: "How one compiler takes your trust domain, tier and perimeter, splits the model accordingly, and hands you an OpenAI-compatible endpoint."
+---
+
+# The Altaica compiler
+
+<span className="zk-status zk-status--rnd">◐ Active R&D</span>
+
+**In one breath:** you describe the workload and the constraints. The compiler
+weighs your needs, your hardware and your budget, picks the privacy techniques
+that hold up for your case, and hands back an OpenAI-compatible endpoint inside
+your perimeter. You never have to choose between MPC, enclaves or federated
+learning yourself. That's the compiler's job.
+
+<video className="zk-video" autoPlay loop muted playsInline
+  src="/videos/compiler-split.mp4" title="How the compiler splits a model" />
+
+## The assembly line
+
+Think of an AI model as a long assembly line with many stations (its layers).
+Some stations do subtle, sensitive work. Others just do enormous amounts of
+plain arithmetic.
+
+The compiler walks the whole line, station by station, and asks one question at
+each: *if an outsider watched only this station, what could they learn?*
+
+### 1. Mapping
+
+Altaica takes an open model and maps its entire structure: every layer, every
+operation, and the perfect points to split it.
+
+### 2. The split
+
+The work divides into two kinds:
+
+- **The "thinking" parts** (non-linear operations). These are the ones that
+  could leak meaning. They stay on trusted ground: your own device, your
+  perimeter, or an attested enclave, depending on the anchor you chose.
+- **The "heavy lifting" parts** (linear operations, the giant matrix math).
+  These are shipped out to fast, untrusted GPUs, but only after being masked
+  or secret-shared so the GPUs are crunching numbers they cannot interpret.
+
+The result: the network does most of the work while seeing none of the
+meaning.
+
+### 3. The receipt
+
+Because the heavy lifting runs on machines we don't ask you to trust, the work
+comes back with a STARK proof: a mathematical receipt that the network did the
+math correctly, without the network ever seeing your content. More in
+[Receipts](/docs/platform/receipts).
+
+## One honest caveat, because it matters
+
+Masking-style obfuscation on its own is a *basic* technique. If a serving node
+knows exactly which model it is running, some maskings can in principle be
+reversed. We know this, we benchmark it, and it's precisely why zkAGI never
+leans on any single technique. The compiler's whole reason to exist is to
+choose, per workload, from the full toolbox: masking, secret sharing, MPC,
+FHE, federated learning, attested hardware, and combinations of them, so that
+the guarantee you get is the one that actually survives your threat model.
+
+## What you get at the end
+
+```python
+# the only change your code needs
+client = OpenAI(
+    base_url="https://infer.your-perimeter.ai/v1",
+    api_key="zk-..."
+)
+client.chat.completions.create(...)  # models hosted inside YOUR perimeter
+```
+
+## Looking ahead
+
+We're extending the compiler with homomorphic encryption at the entry and exit
+points of the pipeline: a "secure transport box" that protects data the moment
+it enters and right before it's handed back. Like everything on this page,
+watch the [Status board](/docs/trust-center/status) rather than taking a
+roadmap's word for it.
+
+:::caution Where this stands
+The compiler is the heart of our research program and under active R&D. Model
+splitting, masked serving and receipt generation run today in our environments;
+per-customer compilation is done with our team, per engagement, with the
+resulting guarantees agreed in writing. This page describes the architecture we
+build toward, not a general-availability promise.
+:::
+
+
+----------------------------------------
+SOURCE: platform/heart-health-case.mdx (https://docs.zkagi.ai/docs/platform/heart-health-case)
+----------------------------------------
+
+---
+id: heart-health-case
+title: "Case study: ZK Heart Health"
+sidebar_position: 5
+description: "A working example of selective disclosure: proving a private heart-risk score meets a threshold while revealing nothing else."
+---
+
+
+
+# Case study: ZK Heart Health
+
+<span className="zk-status zk-status--live">● Working demo</span>
+
+A small, real example of the [selective disclosure](/docs/platform/selective-disclosure)
+philosophy in a clinical setting: the verifier learns a YES/NO and a model
+hash, and nothing else about the patient.
+
+## What is ZK Heart Health? {#what-is-zk-heart-health}
+
+<p className="snippet-answer">
+ZK Heart Health is a ZkAGI application that proves a private heart-risk score meets a policy threshold without revealing raw medical values. It uses zk-SNARK (Groth16) proofs for privacy-preserving analytics with compact, verifiable selective disclosure.
+</p>
+
+- **Goal:** Prove a private heart-risk score meets a policy threshold without revealing raw medical values
+- **Selective disclosure:** The verifier learns only a YES/NO claim and a model commitment hash (which binds the model used); no feature values are shown
+- **Privacy AI fit:** Demonstrates privacy-preserving analytics with verifiability and compact proofs (zk-SNARK: Groth16)
+
+---
+
+## How does ZkAGI prove heart risk scores privately? {#how-does-zkagi-prove-heart-risk-scores-privately}
+
+<p className="snippet-answer">
+ZkAGI uses a three-step cryptographic pipeline (build, prove, verify) where the build step produces keys tied to the circuit and model weights, the prover keeps inputs private and outputs a succinct proof, and the verifier checks correctness learning only the claim and model hash. This ensures verifiable results with minimal disclosure and prevents model swaps.
+</p>
+
+- **Build step:** Produces the cryptographic keys tied to the circuit and weights (prevents model swap)
+- **Prover step:** Keeps inputs private, outputs only a succinct proof
+- **Verifier step:** Checks correctness fast, learns only the claim and model hash, and no raw data
+
+<figure style={{ textAlign: 'center' }}>
+  <video
+    src="/videos/health.mp4"
+    controls
+    style={{ maxWidth: '900px', width: '100%', borderRadius: 12 , height:'500px' }}
+  />
+  <figcaption style={{ fontSize: '0.9rem', opacity: 0.75, marginTop: 8 }}>
+    ZK Heart Health · private risk proof demo
+  </figcaption>
+</figure>
+
+> That's the full promise: *Verifiable results with minimal disclosure*, ready to extend to genomics and broader medical predicates.
+
+---
+
+## What are the future healthcare and genomics applications of ZkAGI? {#what-are-the-future-healthcare-and-genomics-applications-of-zkagi}
+
+<p className="snippet-answer">
+ZkAGI's zero-knowledge proof technology extends to on-device patient proofs, polygenic risk scores, cross-site cohort queries, and regulatory compliance, all without exposing raw medical data or genomes. Technical extensions include PII commitments, on-chain verification via Verifier.sol on L2s, and integration with FHIR/SMART health data standards.
+</p>
+
+**Clinical and patient apps**
+
+- **On-device proofs:** Patients compute proofs on their phone; clinics/insurers verify a predicate (e.g., PRS >= T) without accessing genomes
+- **Selective disclosures:** "Lab value in range" or "eligibility met" proofs instead of sharing raw labs or charts
+- **Consent receipts:** Publish proofs that an access decision met policy/consent, without exposing data
+
+**Genomics-specific**
+
+- **Polygenic Risk Score (PRS):** Prove PRS thresholds for specific conditions without revealing variants
+- **Variant status (PGx/rare disease):** Use Merkle-tree membership to prove presence/absence in a panel without revealing which variant
+- **Cohort queries across sites:** Hospital A and B return count proofs for inclusion criteria; meta-analysis runs without sharing genomes
+
+**Provider, payer, regulator**
+
+- **Utilization controls:** Prove compliance with coverage criteria (e.g., biomarkers present) before reimbursement
+- **Auditable privacy:** Third parties can re-verify proofs later; combine with signed policies for compliance trails
+
+**Technical extensions**
+
+- **PII commitments:** Hash(Name, salt) as a public handle; identity stays hidden but proofs are linkable when desired
+- **Per-verifier salts:** Prevent cross-verifier linkage; same user looks unrelated across orgs
+- **On-chain verification:** Use generated Verifier.sol for public, timestamped verification on L2s
+- **MPC/HE + ZK:** Use MPC/HE for collaborative compute; ZK to attest results and policies were followed
+- **FHIR/SMART integration:** Wrap ZK proofs as FHIR DocumentReference or SMART app artifacts
+
+---
+
+## What do ZkAGI's ZK proof commands guarantee? {#what-do-zkagis-zk-proof-commands-guarantee}
+
+<p className="snippet-answer">
+ZkAGI's ZK proof commands guarantee that the cryptographic keys are bound to a specific circuit and model (preventing model swaps), that user inputs remain private with only a succinct proof as output, and that verification is fast while revealing only the claim and model hash. Together, these steps deliver verifiable results with minimal disclosure.
+</p>
+
+- **Build step** produces the cryptographic keys tied to this circuit and weights (prevents model swap)
+- **Prover step** keeps inputs private, outputs only a succinct proof
+- **Verifier step** checks correctness fast, learns only the claim and model hash, and no raw data
+
+---
+
+## Related reading
+
+- [Selective disclosure: the mechanism behind this demo](/docs/platform/selective-disclosure)
+- [Receipts and what they evidence](/docs/platform/receipts)
+- [Tiers: when to reach for Sovereign](/docs/trust/tiers)
+
+<Head>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is ZK Heart Health?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ZK Heart Health is a ZkAGI application that proves a private heart-risk score meets a policy threshold without revealing raw medical values. It uses zk-SNARK (Groth16) proofs for privacy-preserving analytics with compact, verifiable selective disclosure."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does ZkAGI prove heart risk scores privately?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ZkAGI uses a three-step cryptographic pipeline (build, prove, verify) where the build step produces keys tied to the circuit and model weights, the prover keeps inputs private and outputs a succinct proof, and the verifier checks correctness learning only the claim and model hash."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the future healthcare and genomics applications of ZkAGI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ZkAGI's zero-knowledge proof technology extends to on-device patient proofs, polygenic risk scores, cross-site cohort queries, and regulatory compliance, all without exposing raw medical data or genomes. Technical extensions include PII commitments, on-chain verification via Verifier.sol on L2s, and integration with FHIR/SMART health data standards."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What do ZkAGI's ZK proof commands guarantee?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ZkAGI's ZK proof commands guarantee that the cryptographic keys are bound to a specific circuit and model (preventing model swaps), that user inputs remain private with only a succinct proof as output, and that verification is fast while revealing only the claim and model hash."
+        }
+      }
+    ]
+  })}
+  </script>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "ZK Heart Health: Private Heart Risk Proofs with ZkAGI",
+    "proficiencyLevel": "Advanced",
+    "about": { "@type": "SoftwareApplication", "name": "ZkAGI" },
+    "dateModified": "2026-03-11"
+  })}
+  </script>
+</Head>
+
+
+----------------------------------------
+SOURCE: platform/receipts.md (https://docs.zkagi.ai/docs/platform/receipts)
+----------------------------------------
+
+---
+id: receipts
+title: Receipts & the Explorer
+sidebar_position: 2
+description: "Every inference returns a verifiable receipt: the artifact your compliance team can check without asking us anything."
+---
+
+# Receipts & the Explorer
+
+<span className="zk-status zk-status--live">● Live</span>
+
+**In one breath:** every call returns a receipt recording which anchor and tier
+ran it, the measured privacy bound, and that no plaintext left your boundary.
+Your auditor can check it without asking us anything.
+
+<video className="zk-video" autoPlay loop muted playsInline
+  src="/videos/receipt-flow.mp4" title="The life of a receipt" />
+
+## Why a receipt
+
+"We don't train on your data" is a policy in a PDF. A receipt is different: it
+is evidence attached to the very call it describes. When the auditor asks what
+happened, you don't hand them a screenshot of a log. You hand them an artifact
+they can verify themselves.
+
+## What's inside one
+
+```json
+{
+  "result": { "...": "..." },
+  "receipt": {
+    "trust_domain": "mathematics",
+    "tier": "sovereign-mpc",
+    "guarantee": "information-theoretic",
+    "egress": "none",
+    "proof": "stark:0x9f3a"
+  }
+}
+```
+
+| Field | What it tells your auditor |
+|---|---|
+| `trust_domain` | Which anchor (silicon, math or hybrid) enforced this call |
+| `tier` | Which strength of guarantee actually ran |
+| `guarantee` | The privacy property in force, e.g. information-theoretic |
+| `egress` | Confirmation that plaintext never crossed your boundary |
+| `proof` | A STARK record anyone can verify, no vendor in the loop |
+
+## The Explorer
+
+The Explorer is where receipts live: a queryable trail of every inference,
+built for the person who has to answer "what ran, where, under what
+guarantee?" six months later. [Request access](/contact) and we'll walk your
+compliance team through it.
+
+## What a receipt can evidence
+
+Receipts are designed to line up with the clauses your auditors actually cite:
+
+| Framework | Where receipts help |
+|---|---|
+| GDPR Art. 25 | Data protection by design and by default |
+| GDPR Art. 32 | Security of processing: proof of technical measures |
+| HIPAA §164.312 | Technical safeguards: access control and integrity |
+| EU AI Act Art. 12 | Record-keeping and traceability of inference |
+
+:::caution The audit stays yours
+This table is mapping guidance for your compliance team, not legal advice and
+not a certification. zkAGI's inference service has not itself been audited or
+certified against these frameworks, and compliance responsibility stays with
+you. What we offer is evidence that makes your case easier to carry, and
+hands-on help preparing. We assist with audit preparation; we don't conduct
+audits. Full text in [Disclosures](/docs/trust-center/disclosures).
+:::
+
+**Next:** [unlock a document with a proof →](/docs/platform/selective-disclosure)
+
+
+----------------------------------------
+SOURCE: platform/selective-disclosure.md (https://docs.zkagi.ai/docs/platform/selective-disclosure)
+----------------------------------------
+
+---
+id: selective-disclosure
+title: "Selective disclosure: proof-unlocked documents"
+sidebar_position: 3
+description: "Upload a document, generate a zero-knowledge proof client-side, and use that proof as the key to a private reading session: selective disclosure over your own data."
+---
+
+# Selective disclosure: proof-unlocked documents
+
+<span className="zk-status zk-status--live">● Live on Zynapse</span>
+
+**In one breath:** you upload a document, a zero-knowledge proof is generated
+on the client side, and that proof becomes the key that unlocks a reading
+session over that exact data. You choose what gets disclosed. Nothing else
+exists, as far as the session is concerned.
+
+<video className="zk-video" autoPlay loop muted playsInline
+  src="/videos/doc-unlock.mp4" title="A proof unlocking a private reading session" />
+
+## The idea, with a filing cabinet
+
+Imagine a filing cabinet that doesn't have a lock. Instead, it has a rule: it
+will only open for someone who can *prove* they already hold the document
+inside, without showing the document to anyone on the way. And when it opens,
+it doesn't hand over the whole drawer. It answers exactly the question asked,
+and nothing more.
+
+That's the mechanism:
+
+1. **Client-side proof.** Your document never leaves in the clear. A
+   zero-knowledge proof of it is generated where the document lives: on your
+   machine.
+2. **The proof is the key.** That proof file, not a password, not a cookie, is
+   what opens a reading session bound to that specific data. No proof, no
+   session. Wrong document, no session.
+3. **Selective disclosure.** Within the session you ask questions, and the
+   session answers from the proven document. What's disclosed is what you ask
+   for. The raw document is never on the table.
+
+## Two calls, that's the whole API
+
+```bash
+# 1. generate the proof from your document (the key)
+curl -s -X POST "https://zynapse.zkagi.ai/v1/generate_proof" \
+  -H "X-API-Key: <YOUR_KEY>" \
+  -F "file=@contract.pdf" -o proof.json
+
+# 2. use the proof to unlock a Q&A session on that data
+curl -s -X POST "https://zynapse.zkagi.ai/v1/ask" \
+  -H "X-API-Key: <YOUR_KEY>" \
+  -F "query=What are the termination clauses?" \
+  -F "proof_file=@proof.json;filename=proof.json;type=application/json"
+```
+
+Full parameters, error codes and SDK snippets are in the
+[Zynapse API reference](/docs/api/zynapse).
+
+## Now couple it with the Sovereign tier
+
+Selective disclosure controls *what* is revealed. The
+[Sovereign tier](/docs/trust/tiers) controls *who could possibly see it while
+computing*. Put them together and you get something genuinely rare: **private
+introspection over documents.**
+
+The proof unlocks the session, and the session's inference itself runs as MPC:
+split across operators who each hold meaningless fragments, with the dealer
+role runnable on your own device. So you can interrogate a portfolio of
+contracts, a clinical file, a diligence data room, and at no point does any
+single machine, operator, or company (including us) hold both the question and
+the document in readable form. The answer arrives with a
+[receipt](/docs/platform/receipts) proving how it was computed.
+
+Ask your hardest questions of your most sensitive documents, and the
+infrastructure is built so that nobody, us included, gets to listen in.
+
+## Seen in the wild
+
+Our [heart-health case study](/docs/platform/heart-health-case) uses the same
+selective-disclosure principle in miniature: a Groth16 proof shows a private
+heart-risk score meets a policy threshold, and the verifier learns a YES/NO
+and nothing else. Same philosophy, clinical setting.
+
+:::caution Where this stands
+Proof-unlocked document Q&A (`/v1/generate_proof` + `/v1/ask`) is live on
+Zynapse today. Running that session end-to-end under the Sovereign MPC tier is
+active R&D and deployed per engagement; the coupling described above is the
+architecture we build toward, and what applies to your deployment is agreed in
+writing. See the [Status board](/docs/trust-center/status).
+:::
+
+
+----------------------------------------
+SOURCE: platform/workloads.md (https://docs.zkagi.ai/docs/platform/workloads)
+----------------------------------------
+
+---
+id: workloads
+title: Workloads you can run
+sidebar_position: 4
+description: "Private inference, confidential-hardware inference, federated learning, and in-perimeter training. The compiler picks the technique, you keep the SDK."
+---
+
+# Workloads you can run
+
+<span className="zk-status zk-status--engagement">◇ Mix varies · see status board</span>
+
+**In one breath:** inference is only part of the story. The same trust domain
+you defined wraps training and federated learning too, so the whole model
+lifecycle stays inside your rules.
+
+## Private inference
+
+<span className="zk-status zk-status--live">● Live</span>
+
+The workhorse. The compiler matches the technique to how sensitive the data
+is: masked, secret-shared, or fully homomorphic. The strongest option never
+decrypts your inputs at all, anywhere. One key, four modalities: vision,
+voice, text and time-series.
+
+## Confidential-hardware inference
+
+<span className="zk-status zk-status--engagement">◇ Per engagement</span>
+
+Models served inside attested enclaves, with NVIDIA confidential computing on
+the GPUs doing the serving. Near-native speed and chip-signed evidence, for
+teams whose auditors already accept confidential computing.
+
+## Federated learning
+
+<span className="zk-status zk-status--rnd">◐ Active R&D</span>
+
+Train one model across hospitals, branches or borders **without the data ever
+pooling**. Each site keeps its records where they are; only the learning
+moves. This is how a network of clinics gets a model none of them could train
+alone, without any of them handing over a single patient record.
+
+## Private training & fine-tuning
+
+<span className="zk-status zk-status--rnd">◐ Active R&D</span>
+
+Bring the model to your corpus instead of the other way around. Fine-tune on
+proprietary data inside the perimeter you defined, receipts included.
+
+## You don't pick the technique. You pick the outcome.
+
+It bears repeating: you never have to become an expert in MPC versus FHE
+versus federated averaging. You tell the [compiler](/docs/platform/compiler)
+what the data is, where it may live, and what your auditors accept. It picks
+what holds up, and gives your engineers the same OpenAI-compatible endpoint
+either way.
+
+:::caution Where this stands
+Private inference on Standard and Private tiers serves production traffic.
+Confidential-hardware serving is assembled per engagement on attested
+infrastructure. Federated learning and in-perimeter training are active R&D,
+run with design partners. The [Status board](/docs/trust-center/status) is the
+source of truth; your agreement defines what applies to you.
+:::
+
+
+----------------------------------------
+SOURCE: api/quickstart.md (https://docs.zkagi.ai/docs/api/quickstart)
+----------------------------------------
+
+---
+id: quickstart
+title: Quickstart
+sidebar_position: 1
+description: "If you can call OpenAI, you can call this. First private inference and first receipt in five minutes."
+---
+
+# Quickstart
+
+<span className="zk-status zk-status--live">● Live</span>
+
+**In one breath:** point the OpenAI SDK you already use at a new base URL,
+and every response comes back wearing a receipt.
+
+## 1. Get a key
+
+Keys are issued through your workspace admin or [by talking to us](/contact).
+If your deployment is in-perimeter, your endpoint URL is your own; the
+examples below use the hosted one.
+
+## 2. Make your first call
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://infer.zkagi.ai/v1",
+    api_key="zk-...",
+)
+
+resp = client.chat.completions.create(
+    model="zk-default",
+    messages=[{"role": "user", "content": "Summarize this clinical note: ..."}],
+    extra_body={"tier": "private"},   # foothill | private | sovereign
+)
+print(resp.choices[0].message.content)
+```
+
+Same shape in curl:
+
+```bash
+curl -s https://infer.zkagi.ai/v1/chat/completions \
+  -H "Authorization: Bearer $ZKAGI_KEY" \
+  -d '{"model":"zk-default","tier":"private","messages":[{"role":"user","content":"..."}]}'
+```
+
+## 3. Meet your receipt
+
+Every response carries one:
+
+```json
+"receipt": {
+  "trust_domain": "mathematics",
+  "tier": "private",
+  "egress": "none",
+  "proof": "stark:0x9f3a"
+}
+```
+
+Keep it. It's the [compliance artifact](/docs/platform/receipts) your future
+self hands to an auditor.
+
+## 4. Go deeper
+
+- Ask questions of your own documents with a [proof as the key](/docs/platform/selective-disclosure)
+- Turn the tier up to [sovereign](/docs/trust/tiers) for your batch workloads
+- Browse the full [Zynapse API reference](/docs/api/zynapse) for proofs, media generation and key management
+
+:::caution Where this stands
+The hosted endpoint, tiers Standard and Private, and receipts are live. The
+`sovereign` tier value routes to the MPC path, which is active R&D and
+enabled per engagement. Endpoint names and fields shown here can evolve while
+we're pre-GA; the [Status board](/docs/trust-center/status) tracks it.
+:::
+
+
+----------------------------------------
+SOURCE: api/zynapse.md (https://docs.zkagi.ai/docs/api/zynapse)
+----------------------------------------
+
+---
+id: zynapse
+title: Zynapse API reference
+sidebar_position: 2
+description: "Full reference for the Zynapse API: client-side proofs, proof-unlocked Q&A, media generation, and key management."
+---
+
+
+
+# Zynapse API reference
+
+<span className="zk-status zk-status--live">● Live</span>
+
+Welcome to the Zynapse API. These endpoints let you generate privacy-preserving
+proofs for documents on the client side, run Q&A sessions unlocked by those
+proofs ([how that works](/docs/platform/selective-disclosure)), and create
+media. Admin endpoints cover user management and the API key lifecycle.
+
+**Base URL**: `https://zynapse.zkagi.ai`
+
+---
+
+## How do I authenticate with the Zynapse API? {#how-do-i-authenticate-with-the-zynapse-api}
+
+<p className="snippet-answer">All Zynapse API endpoints require an API key passed via the <code>X-API-Key</code> header unless explicitly noted otherwise. Keep your keys secret, and use the admin endpoints to rotate or revoke them when needed.</p>
+
+- **Header format**: `X-API-Key: <your_api_key>`
+- **Supported content types**:
+  - File upload: `multipart/form-data`
+  - JSON: `application/json`
+  - Downloads: binary stream unless otherwise specified
+- Rotate and revoke keys using the Admin endpoints described below
+
+---
+
+## How do I ask questions with proof using the Zynapse API? {#how-do-i-ask-questions-with-proof-using-the-zynapse-api}
+
+<p className="snippet-answer">Send a POST request to <code>/v1/ask</code> with your question and a proof JSON file to perform Q&A over your document set with cryptographic proof attachment. The proof file must first be generated via the <code>/v1/generate_proof</code> endpoint.</p>
+
+- **Endpoint**: `POST /v1/ask`
+- **Headers**: `X-API-Key`
+- **Content-Type**: `multipart/form-data`
+- **Form fields**:
+  - `query` *(string, required)*: The user question.
+  - `proof_file` *(file, required)*: Proof JSON generated by `/v1/generate_proof`.
+
+**cURL**
+
+```bash
+curl -s -X POST "https://zynapse.zkagi.ai/v1/ask" \
+  -H "X-API-Key: <YOUR_KEY>" \
+  -F "query=What is this document about?" \
+  -F "proof_file=@proof.json;filename=proof.json;type=application/json"
+```
+
+*Tip*: if `proof.json` is coming from stdin, you can pipe it: `... -F "proof_file=@-;filename=proof.json;type=application/json"`
+
+**Node.js (fetch)**
+
+```js
+const form = new FormData();
+form.append("query", "What is this document about?");
+form.append("proof_file", new Blob([JSON.stringify(proofObj)], { type: "application/json" }), "proof.json");
+
+const res = await fetch("https://zynapse.zkagi.ai/v1/ask", {
+  method: "POST",
+  headers: { "X-API-Key": process.env.ZYNAPSE_API_KEY },
+  body: form
+});
+const data = await res.json();
+```
+
+**Python**
+
+```python
+
+files = {
+  'query': (None, 'What is this document about?'),
+  'proof_file': ('proof.json', open('proof.json','rb'), 'application/json')
+}
+r = requests.post('https://zynapse.zkagi.ai/v1/ask', headers={'X-API-Key': 'YOUR_KEY'}, files=files)
+print(r.json())
+```
+
+**Response (example)**
+
+```json
+{
+  "answer": "This document is a resume highlighting...",
+  "references": [{"title": "vivek_resume.pdf", "page": 1}],
+  "used_proof": true,
+  "latency_ms": 842
+}
+```
+
+---
+
+## How do I generate a proof for a file using Zynapse? {#how-do-i-generate-a-proof-for-a-file-using-zynapse}
+
+<p className="snippet-answer">Upload a document to <code>POST /v1/generate_proof</code> to receive a proof artifact that you can later pass to <code>/v1/ask</code> for verified Q&A. The endpoint accepts PDF, image, and text files via multipart form data.</p>
+
+- **Endpoint**: `POST /v1/generate_proof`
+- **Headers**: `X-API-Key`
+- **Content-Type**: `multipart/form-data`
+- **Form fields**:
+  - `file` *(file, required)*: PDF/image/text you want to index/prove.
+
+**cURL**
+
+```bash
+curl -s -X POST "https://zynapse.zkagi.ai/v1/generate_proof" \
+  -H "X-API-Key: <YOUR_KEY>" \
+  -F "file=@vivek_resume.pdf" \
+  -o proof.json
+```
+
+**Node.js (fetch)**
+
+```js
+const form = new FormData();
+form.append("file", fs.createReadStream("vivek_resume.pdf"));
+const res = await fetch("https://zynapse.zkagi.ai/v1/generate_proof", {
+  method: "POST",
+  headers: { "X-API-Key": process.env.ZYNAPSE_API_KEY },
+  body: form
+});
+const proof = await res.json();
+```
+
+**Python**
+
+```python
+
+r = requests.post(
+  'https://zynapse.zkagi.ai/v1/generate_proof',
+  headers={'X-API-Key': 'YOUR_KEY'},
+  files={'file': open('vivek_resume.pdf','rb')}
+)
+open('proof.json','wb').write(r.content)
+```
+
+**Response (example)**
+
+```json
+{
+  "proof_version": "1.0",
+  "doc_hash": "sha256:...",
+  "created_at": "2025-10-11T10:20:00Z",
+  "segments": [ { "page": 1, "hash": "..." } ]
+}
+```
+
+---
+
+## How do I generate images with the Zynapse API? {#how-do-i-generate-images-with-the-zynapse-api}
+
+<p className="snippet-answer">Send a JSON POST request to <code>/v1/generate/image</code> with a text prompt and optional parameters like width, height, and guidance scale to generate images. The response is typically PNG bytes streamed directly, though some deployments return an <code>image_url</code> instead.</p>
+
+- **Endpoint**: `POST /v1/generate/image`
+- **Headers**: `X-API-Key`, `Content-Type: application/json`
+- **Body parameters**:
+  - `prompt` *(string, required)*: What to draw.
+  - `width` *(int, optional)*: Default 1024 or service default.
+  - `height` *(int, optional)*: Default 1024 or service default.
+  - `num_steps` *(int, optional)*: Inference steps.
+  - `guidance` *(float, optional)*: Classifier-free guidance scale.
+  - `seed` *(int, optional)*
+  - `strength` *(float, optional)*: For img2img style strength if supported.
+
+**cURL**
+
+```bash
+curl -X POST https://zynapse.zkagi.ai/v1/generate/image \
+  -H "X-API-Key: <YOUR_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "a man wearing ZKAGI texted tshirt and eating burger",
+    "width": 720,
+    "height": 1024,
+    "num_steps": 24,
+    "guidance": 3.5,
+    "seed": 1,
+    "strength": 1
+  }' \
+  --output image_v1.png
+```
+
+**Node.js (fetch)**
+
+```js
+const res = await fetch("https://zynapse.zkagi.ai/v1/generate/image", {
+  method: "POST",
+  headers: {
+    "X-API-Key": process.env.ZYNAPSE_API_KEY,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ prompt: "a man wearing ZKAGI texted tshirt and eating burger", width: 720, height: 1024, num_steps: 24, guidance: 3.5, seed: 1, strength: 1 })
+});
+const arrayBuffer = await res.arrayBuffer();
+fs.writeFileSync("image_v1.png", Buffer.from(arrayBuffer));
+```
+
+**Python**
+
+```python
+
+payload = {
+  "prompt": "a man wearing ZKAGI texted tshirt and eating burger",
+  "width": 720,
+  "height": 1024,
+  "num_steps": 24,
+  "guidance": 3.5,
+  "seed": 1,
+  "strength": 1
+}
+r = requests.post('https://zynapse.zkagi.ai/v1/generate/image', headers={'X-API-Key': 'YOUR_KEY','Content-Type':'application/json'}, json=payload)
+open('image_v1.png','wb').write(r.content)
+```
+
+**Response**: PNG bytes (image stream). Some deployments may return `{ "image_url": "..." }` instead.
+
+---
+
+## How do I generate videos with the Zynapse API? {#how-do-i-generate-videos-with-the-zynapse-api}
+
+<p className="snippet-answer">Send a JSON POST request to <code>/v1/generate-video</code> with a text prompt and optional tuning parameters like frame count and aspect ratio. The API returns a job object with a status and download URL, or in some deployments streams the video file directly.</p>
+
+- **Endpoint**: `POST /v1/generate-video`
+- **Headers**: `X-API-Key`, `Content-Type: application/json`
+- **Body parameters**:
+  - `prompt` *(string, required)*
+  - `fast_mode` *(string, optional)*: e.g., `Fast` | `Balanced` | `Quality`
+  - `lora_scale` *(number, optional)*
+  - `num_frames` *(int, optional)*: e.g., 81
+  - `aspect_ratio` *(string, optional)*: e.g., `16:9`
+  - `sample_shift`, `sample_steps`, `frames_per_second`, `sample_guide_scale` *(optional tuning params)*
+
+**cURL**
+
+```bash
+curl -X POST 'https://zynapse.zkagi.ai/v1/generate-video' \
+  -H 'X-API-Key: <YOUR_KEY>' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "prompt": "A futuristic cityscape at night with flying cars",
+    "fast_mode": "Balanced",
+    "lora_scale": 1,
+    "num_frames": 81,
+    "aspect_ratio": "16:9",
+    "sample_shift": 5,
+    "sample_steps": 30,
+    "frames_per_second": 16,
+    "sample_guide_scale": 5
+  }' \
+  -o video_job.json
+```
+
+**Node.js (fetch)**
+
+```js
+const job = await fetch("https://zynapse.zkagi.ai/v1/generate-video", {
+  method: "POST",
+  headers: { "X-API-Key": process.env.ZYNAPSE_API_KEY, "Content-Type": "application/json" },
+  body: JSON.stringify({ prompt: "A futuristic cityscape at night with flying cars", num_frames: 81, aspect_ratio: "16:9" })
+}).then(r => r.json());
+// If the API is async, poll job.status or download URL in the response
+```
+
+**Python**
+
+```python
+
+payload = {
+  "prompt": "A futuristic cityscape at night with flying cars",
+  "fast_mode": "Balanced",
+  "num_frames": 81,
+  "aspect_ratio": "16:9"
+}
+job = requests.post('https://zynapse.zkagi.ai/v1/generate-video', headers={'X-API-Key': 'YOUR_KEY','Content-Type':'application/json'}, json=payload).json()
+print(job)
+```
+
+**Response (example)**
+
+```json
+{
+  "job_id": "vid_12345",
+  "status": "queued",
+  "eta_seconds": 90,
+  "download_url": null
+}
+```
+
+> Some deployments return the file directly. If you get binary bytes, write to `.mp4`.
+
+---
+
+## How do I manage users and API keys in Zynapse? {#how-do-i-manage-users-and-api-keys-in-zynapse}
+
+<p className="snippet-answer">Zynapse provides admin endpoints for adding users, generating API keys with scoped permissions, and revoking keys. These management endpoints are proxied under the same base domain and may require an admin secret or service token.</p>
+
+- **Add User**: `POST /add-user`
+- **Generate API Key**: `POST /generate-api-key`
+- **Delete API Key**: `POST /delete-api-key`
+- Admin endpoints may require an admin secret or service token; check your Zynapse deployment configuration.
+
+### Add User
+
+**Node.js route example**
+
+```js
+app.post('/add-user', async (req, res) => {
+  const apiUrl = 'https://zynapse.zkagi.ai/add-user';
+  await fetchData(apiUrl, res, 'POST', req.body);
+});
+```
+
+### Generate API Key
+
+**Endpoint**: `POST /generate-api-key`
+
+**Body (JSON)** (example)
+
+```json
+{
+  "email": "user@example.com",
+  "scopes": ["image:write", "kb:read"],
+  "ttl_days": 30
+}
+```
+
+**Node.js route example**
+
+```js
+app.post('/generate-api-key', async (req, res) => {
+  const apiUrl = 'https://zynapse.zkagi.ai/generate-api-key';
+  await fetchData(apiUrl, res, 'POST', req.body);
+});
+```
+
+### Delete API Key
+
+**Endpoint**: `POST /delete-api-key`
+
+**Body (JSON)** (example)
+
+```json
+{
+  "email": "user@example.com",
+  "api_key": "<KEY_TO_REVOKE>"
+}
+```
+
+**Node.js route example**
+
+```js
+app.post('/delete-api-key', async (req, res) => {
+  const apiUrl = 'https://zynapse.zkagi.ai/delete-api-key';
+  await fetchData(apiUrl, res, 'POST', req.body);
+});
+```
+
+---
+
+## What errors can the Zynapse API return? {#what-errors-can-the-zynapse-api-return}
+
+<p className="snippet-answer">The Zynapse API returns errors in a standard JSON envelope with a code, message, and optional details field. Common HTTP status codes range from 400 for bad requests to 503 for service errors.</p>
+
+**Standard JSON error envelope (example)**:
+
+```json
+{
+  "error": {
+    "code": "INVALID_ARGUMENT",
+    "message": "proof_file is required",
+    "details": null
+  }
+}
+```
+
+**Common HTTP statuses**:
+
+- `400 Bad Request`: Missing/invalid parameters
+- `401 Unauthorized`: Missing or invalid `X-API-Key`
+- `403 Forbidden`: Not enough permissions for the resource
+- `404 Not Found`: Wrong path or resource missing
+- `413 Payload Too Large`: File exceeds allowed size
+- `429 Too Many Requests`: Rate limit exceeded
+- `500/502/503`: Service error; retry with backoff
+
+---
+
+## What are the rate limits and best practices for the Zynapse API? {#what-are-the-rate-limits-and-best-practices-for-the-zynapse-api}
+
+<p className="snippet-answer">Zynapse enforces rate limits and returns HTTP 429 when exceeded. Follow best practices like caching proofs client-side, splitting large PDFs, and using exponential backoff to maximize reliability.</p>
+
+- Prefer smaller files; split large PDFs by chapters if possible.
+- Cache proofs client-side and reuse with `/v1/ask` to reduce latency.
+- Use exponential backoff for `429/5xx` responses.
+- Store `doc_hash` and proof metadata to prevent duplicate uploads.
+
+---
+
+## Quick Reference
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Method</th>
+      <th>Path</th>
+      <th>Auth</th>
+      <th>Content-Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ask with proof</td>
+      <td>POST</td>
+      <td><code>/v1/ask</code></td>
+      <td>X-API-Key</td>
+      <td><code>multipart/form-data</code></td>
+    </tr>
+    <tr>
+      <td>Generate proof</td>
+      <td>POST</td>
+      <td><code>/v1/generate_proof</code></td>
+      <td>X-API-Key</td>
+      <td><code>multipart/form-data</code></td>
+    </tr>
+    <tr>
+      <td>Generate image</td>
+      <td>POST</td>
+      <td><code>/v1/generate/image</code></td>
+      <td>X-API-Key</td>
+      <td><code>application/json</code></td>
+    </tr>
+    <tr>
+      <td>Generate video</td>
+      <td>POST</td>
+      <td><code>/v1/generate-video</code></td>
+      <td>X-API-Key</td>
+      <td><code>application/json</code></td>
+    </tr>
+    <tr>
+      <td>Generate API key (admin)</td>
+      <td>POST</td>
+      <td><code>/generate-api-key</code></td>
+      <td>Admin token</td>
+      <td><code>application/json</code></td>
+    </tr>
+    <tr>
+      <td>Delete API key (admin)</td>
+      <td>POST</td>
+      <td><code>/delete-api-key</code></td>
+      <td>Admin token</td>
+      <td><code>application/json</code></td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Related reading
+
+- [Quickstart: your first call and first receipt](/docs/api/quickstart)
+- [Selective disclosure: how a proof unlocks a session](/docs/platform/selective-disclosure)
+- [Receipts and what they evidence](/docs/platform/receipts)
+- [Status board: what's live vs R&D](/docs/trust-center/status)
+
+<Head>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How do I authenticate with the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "All Zynapse API endpoints require an API key passed via the X-API-Key header unless explicitly noted otherwise. Keep your keys secret, and use the admin endpoints to rotate or revoke them when needed." } },
+      { "@type": "Question", "name": "How do I ask questions with proof using the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "Send a POST request to /v1/ask with your question and a proof JSON file to perform Q&A over your document set with cryptographic proof attachment. The proof file must first be generated via the /v1/generate_proof endpoint." } },
+      { "@type": "Question", "name": "How do I generate a proof for a file using Zynapse?", "acceptedAnswer": { "@type": "Answer", "text": "Upload a document to POST /v1/generate_proof to receive a proof artifact that you can later pass to /v1/ask for verified Q&A. The endpoint accepts PDF, image, and text files via multipart form data." } },
+      { "@type": "Question", "name": "How do I generate images with the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "Send a JSON POST request to /v1/generate/image with a text prompt and optional parameters like width, height, and guidance scale to generate images. The response is typically PNG bytes streamed directly, though some deployments return an image_url instead." } },
+      { "@type": "Question", "name": "How do I generate videos with the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "Send a JSON POST request to /v1/generate-video with a text prompt and optional tuning parameters like frame count and aspect ratio. The API returns a job object with a status and download URL, or in some deployments streams the video file directly." } },
+      { "@type": "Question", "name": "How do I manage users and API keys in Zynapse?", "acceptedAnswer": { "@type": "Answer", "text": "Zynapse provides admin endpoints for adding users, generating API keys with scoped permissions, and revoking keys. These management endpoints are proxied under the same base domain and may require an admin secret or service token." } },
+      { "@type": "Question", "name": "What errors can the Zynapse API return?", "acceptedAnswer": { "@type": "Answer", "text": "The Zynapse API returns errors in a standard JSON envelope with a code, message, and optional details field. Common HTTP status codes range from 400 for bad requests to 503 for service errors." } },
+      { "@type": "Question", "name": "What are the rate limits and best practices for the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "Zynapse enforces rate limits and returns HTTP 429 when exceeded. Follow best practices like caching proofs client-side, splitting large PDFs, and using exponential backoff to maximize reliability." } }
+    ]
+  })}
+  </script>
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How do I use the Zynapse API?",
+    "proficiencyLevel": "Advanced",
+    "about": { "@type": "SoftwareApplication", "name": "ZkAGI" },
+    "dateModified": "2026-03-11"
+  })}
+  </script>
+</Head>
+
+
+----------------------------------------
+SOURCE: trust-center/disclosures.md (https://docs.zkagi.ai/docs/trust-center/disclosures)
+----------------------------------------
+
+---
+id: disclosures
+title: Disclosures
+sidebar_position: 3
+description: "The fine print, said plainly: R&D status, per-engagement configuration, and where compliance responsibility lives."
+---
+
+# Disclosures
+
+The fine print, said plainly. We'd rather you read this now than discover it
+in a contract later.
+
+## 1. Some of this is live. Some is active R&D.
+
+We are a research lab as much as a product company. Parts of what these docs
+describe run in production today; others are under active research and
+development, and capabilities land at different times. The
+[Status board](/docs/trust-center/status) is the single source of truth, and
+before you commit to anything we'll tell you exactly which pieces are ready
+for your use case and which are still on the bench.
+
+## 2. Configured with you, not off the shelf.
+
+Deployments are assembled per customer and validated to your satisfaction
+before go-live. That's the point of the compiler. It also means we do not
+promise that every capability described in these docs exists as a general,
+ready-made feature for every workload. What we deliver for you is what we
+agree with you, in writing. Your agreement with zkAGI defines the guarantees,
+availability and service levels that apply, and that agreement is what
+governs, over anything on this site.
+
+## 3. Your audit stays your audit.
+
+zkAGI is not an audit firm, and our inference service has not itself been
+audited or certified against HIPAA, GDPR, the EU AI Act, or any similar
+framework. Compliance responsibility stays with you, the customer. Our job is
+to make that job easier: receipts, attestations and documentation built to be
+handed to your auditor, plus hands-on help getting ready. **We assist with
+audit preparation; we do not conduct audits, issue certifications, or give
+legal advice.** Regulatory mappings in these docs (for example, the table on
+the [Receipts](/docs/platform/receipts) page) are orientation guidance for
+your compliance team, nothing more.
+
+## 4. Benchmarks are ours unless stated otherwise.
+
+Figures like token-recovery bounds are produced by our own benchmark suites
+under stated conditions. They are honest, repeatable, and not a substitute for
+third-party validation. Where a specific deployment needs independent
+measurement, we'll support it.
+
+## 5. Peaceful use only.
+
+zkAGI is built for peaceful, civilian use: business productivity in regulated
+industries. We do not take defense or other dual-use work.
+
+## 6. Trademarks and names.
+
+NVIDIA, Intel TDX, AWS Nitro, Azure Confidential and similar names are
+trademarks of their respective owners, referenced for comparison and
+compatibility description only. OpenAI compatibility refers to API-shape
+compatibility with the OpenAI client SDKs, and implies no affiliation.
+
+---
+
+*Questions about any of this deserve a human answer:*
+[*talk to us*](/contact)*. Nothing on this page or this site is legal advice.*
+
+
+----------------------------------------
+SOURCE: trust-center/security-model.md (https://docs.zkagi.ai/docs/trust-center/security-model)
+----------------------------------------
+
+---
+id: security-model
+title: Security model
+sidebar_position: 2
+description: "The assumptions we make, stated plainly, because a guarantee is only as good as the assumptions under it."
+---
+
+# Security model
+
+**In one breath:** every privacy guarantee stands on assumptions. Here are
+ours, stated plainly, because your security team will ask and they deserve a
+straight answer.
+
+## What we assume, per anchor
+
+### Mathematics (MPC / secret sharing)
+
+- **Non-collusion.** Shares of your data go to operator-disjoint nodes. The
+  guarantee is information-theoretic *provided the operators don't all
+  conspire*. This is the standard MPC assumption, and we strengthen it by
+  placing operators in different organizations and jurisdictions.
+- **The dealer.** Someone has to split the data into shares. That role can run
+  on **your own device**, so shares are created inside your walls. If you let
+  a server deal instead, that server momentarily holds the input, and your
+  threat model should account for it. We default to client-side dealing where
+  the workload allows.
+- **Masking is not magic.** Lightweight masked serving (our Private tier) has
+  measured, non-zero recovery bounds, and a serving node that knows exactly
+  which model it runs can in principle attack a masking. That's why bounds are
+  benchmarked and published per deployment, and why higher-sensitivity work
+  belongs at the Sovereign tier.
+
+### Silicon (confidential computing)
+
+- **The vendor's root of trust.** Enclave guarantees (NVIDIA confidential
+  computing on GPUs, Intel TDX, AWS Nitro) rest on the hardware vendor's
+  silicon, microcode and attestation service. If your framework can't accept
+  a hardware vendor in the trust chain, use the mathematics anchor.
+- **Side channels exist.** Confidential computing narrows the attack surface;
+  it doesn't abolish physics. We treat enclaves as a strong layer, best used
+  hybrid.
+
+### Both anchors
+
+- **Receipts prove computation, not intent.** A STARK receipt proves the
+  declared computation ran correctly on the declared configuration. It cannot
+  prove that no other copy of unencrypted data existed somewhere it was never
+  supposed to be. Perimeter and anchor choices are what prevent that; the
+  receipt is what evidences them.
+- **Keys and clients.** If your API key leaks or the client machine that
+  generates proofs is compromised, cryptography downstream can't save you.
+  Standard key hygiene applies; rotation is built into the API.
+
+## What we deliberately don't claim
+
+- We don't claim "100% privacy" as a blanket. We state which property holds
+  (e.g. information-theoretic under non-collusion) and where it applies.
+- We don't claim certifications we don't hold. See
+  [Disclosures](/docs/trust-center/disclosures).
+- We don't claim the platform is finished. See the
+  [Status board](/docs/trust-center/status).
+
+## Peaceful use, in writing
+
+zkAGI is built for peaceful, civilian use: business productivity in regulated
+industries such as healthcare, banking and legal. We don't take defense or
+other dual-use work. If that costs us a deal, so be it.
+
+:::info Found something?
+If you believe you've found a vulnerability, [contact us](/contact) with
+"SECURITY" in the subject and we'll respond fast. We're grateful to everyone
+who kicks the tires.
+:::
+
+
+----------------------------------------
+SOURCE: trust-center/status.md (https://docs.zkagi.ai/docs/trust-center/status)
+----------------------------------------
+
+---
+id: status
+title: Status board
+sidebar_position: 1
+description: "The single source of truth for what's live, what's active R&D, and what's configured per engagement."
+---
+
+# Status board
+
+**This page is the single source of truth** for how far along each capability
+is. If a marketing page and this table ever disagree, this table wins. Last
+reviewed: July 2026.
+
+Legend: <span className="zk-status zk-status--live">● Live</span> serving real
+traffic today · <span className="zk-status zk-status--rnd">◐ Active R&D</span>
+runs and is benchmarked, deployed with design partners under written caveats ·
+<span className="zk-status zk-status--engagement">◇ Per engagement</span>
+assembled with our team for your deployment, scope agreed in writing.
+
+| Capability | Status | Notes |
+|---|---|---|
+| OpenAI-compatible inference endpoint | ● Live | Hosted; in-perimeter endpoints per engagement |
+| Standard tier (on-device scrubbing) | ● Live | |
+| Private tier (masked serving) | ● Live | Recovery bounds are our own benchmarks |
+| Verification receipts | ● Live | STARK proofs on supported paths |
+| Client-side proof generation (`/v1/generate_proof`) | ● Live | Zynapse |
+| Proof-unlocked document Q&A (`/v1/ask`) | ● Live | Zynapse |
+| Media generation (image / video) | ● Live | Zynapse |
+| Sovereign tier (MPC serving) | ◐ Active R&D | Deployed per engagement; batch latency |
+| Dealer-on-client-device secret sharing | ◐ Active R&D | |
+| Selective disclosure under MPC (private introspection) | ◐ Active R&D | Architecture target; see page caveat |
+| FHE inference variants | ◐ Active R&D | Workload-dependent |
+| Federated learning | ◐ Active R&D | With design partners |
+| Private training / fine-tuning | ◐ Active R&D | |
+| Confidential-hardware serving (NVIDIA CC, TDX, Nitro) | ◇ Per engagement | On attested infrastructure you or your cloud provide |
+| Custom perimeters (on-prem / regional / transcontinental) | ◇ Per engagement | |
+| The Explorer (receipt browser) | ◇ Per engagement | Access on request |
+| Compiler-assembled per-customer stacks | ◐ Active R&D | Done with our team today |
+
+## How to read "Active R&D"
+
+It doesn't mean vaporware, and it doesn't mean production-hardened. It means:
+the capability runs, we measure it, we're honest about its edges, and if it
+matters to your deployment we'll demonstrate it on your data before anything
+is signed. What we won't do is let a slide deck promise it for us.
+
+:::info
+This board is maintained by hand and reviewed with every significant release.
+Questions about a specific line? [Ask us directly](/contact) and you'll get an
+engineer's answer, not a sales answer.
+:::

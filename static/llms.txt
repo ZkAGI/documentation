@@ -1,0 +1,46 @@
+# zkAGI
+
+> Privacy-preserving AI infrastructure for regulated industries (healthcare,
+> banking, legal). Customers define a trust domain: a trust anchor (silicon =
+> attested hardware such as NVIDIA confidential computing, mathematics =
+> cryptography such as MPC, secret sharing and FHE, or hybrid = both), an
+> assurance tier, and a physical perimeter. The Altaica compiler assembles the
+> serving stack that enforces those choices and exposes an OpenAI-compatible
+> endpoint hosted inside the customer's perimeter. Every call returns a
+> verifiable receipt auditors can check. Swiss-governed. Peaceful, civilian
+> use only. Parts of the platform are active R&D; every docs page carries an
+> honest status label, and deployments are configured per engagement.
+
+Full corpus for ingestion: https://docs.zkagi.ai/llms-full.txt
+
+## Start here
+
+- [Welcome](https://docs.zkagi.ai/docs/): the one-sentence idea and where everything lives
+- [In plain words](https://docs.zkagi.ai/docs/plain-words): jargon-free explanation for non-engineers
+- [Quickstart](https://docs.zkagi.ai/docs/api/quickstart): OpenAI-compatible API in minutes
+
+## Understand the trust model
+
+- [Trust domains](https://docs.zkagi.ai/docs/trust/trust-domains): silicon, mathematics, or hybrid anchors
+- [Tiers](https://docs.zkagi.ai/docs/trust/tiers): Standard, Private, Sovereign
+- [Perimeter](https://docs.zkagi.ai/docs/trust/perimeter): on-prem, one region, or spread
+- [Security model](https://docs.zkagi.ai/docs/trust-center/security-model): threat model, written for skeptics
+
+## Platform
+
+- [The Altaica compiler](https://docs.zkagi.ai/docs/platform/compiler): how a deployment is assembled
+- [Receipts](https://docs.zkagi.ai/docs/platform/receipts): the per-call compliance artifact
+- [Workloads](https://docs.zkagi.ai/docs/platform/workloads): inference, fine-tuning, federated learning, confidential-hardware serving
+- [Zynapse API](https://docs.zkagi.ai/docs/api/zynapse): endpoint reference
+
+## Honesty and status
+
+- [Status board](https://docs.zkagi.ai/docs/trust-center/status): what is live vs active R&D
+- [Disclosures](https://docs.zkagi.ai/docs/trust-center/disclosures): the fine print, said plainly
+
+## Optional
+
+- [Main site](https://zkagi.ai): product story, tiers, Explorer, adoption paths
+- [Sovereign AI](https://zkagi.ai/sovereign): one primitive from individual to nation scale
+- [Contact](https://docs.zkagi.ai/contact): a human reads every message
+- [GitHub](https://github.com/ZkAGI): Altaica-Mesh is open source

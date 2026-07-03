@@ -83,6 +83,7 @@ const config: Config = {
           title: 'Understand',
           items: [
             { label: 'Welcome', to: '/docs' },
+            { label: 'In plain words', to: '/docs/plain-words' },
             { label: 'Trust domains', to: '/docs/trust/trust-domains' },
             { label: 'Tiers', to: '/docs/trust/tiers' },
             { label: 'Receipts', to: '/docs/platform/receipts' },

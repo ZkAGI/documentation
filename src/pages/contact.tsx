@@ -5,12 +5,13 @@ import Heading from '@theme/Heading';
 import styles from './contact.module.css';
 
 /**
- * Every pathway to a human ends here. Submissions are delivered by email
- * to suraj@zkagi.ai via FormSubmit's AJAX endpoint (static-site friendly,
- * works on Vercel with no server). Swap ENDPOINT for a webhook later if
- * you ever want to route through Make/CRM instead.
+ * Every pathway to a human ends here. Submissions go to OUR OWN endpoint on
+ * the main site (zkagi.ai/api/contact, CORS-allowed for this origin), which
+ * forwards to our private Make.com webhook. No third-party form service ever
+ * touches a lead. Use www explicitly: the apex 308-redirects and redirects
+ * on cross-origin preflights are unreliable.
  */
-const ENDPOINT = 'https://formsubmit.co/ajax/suraj@zkagi.ai';
+const ENDPOINT = 'https://www.zkagi.ai/api/contact';
 
 const TOPICS = [
   'Get an API key',
@@ -38,15 +39,11 @@ export default function Contact(): ReactNode {
       const r = await fetch(ENDPOINT, {
         method: 'POST',
         headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-        body: JSON.stringify({
-          ...data,
-          _subject: `[zkAGI docs] ${data.topic || 'New message'} · ${data.name || 'someone'}`,
-          _template: 'table',
-        }),
+        body: JSON.stringify(data),
       });
       const body = await r.json().catch(() => ({}));
-      if (!r.ok || body.success === 'false' || body.success === false) {
-        throw new Error(body.message || `Delivery failed (${r.status})`);
+      if (!r.ok || body.success !== true) {
+        throw new Error(body.error || `Delivery failed (${r.status})`);
       }
       setStatus('sent');
       form.reset();

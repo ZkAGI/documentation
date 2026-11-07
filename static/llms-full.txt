@@ -1,13 +1,919 @@
 # zkAGI — full documentation (auto-generated)
 
-> Privacy-preserving AI infrastructure. You define the trust domain (silicon,
-> mathematics, or hybrid); the Altaica compiler assembles the stack that
-> enforces it; every call returns a verifiable receipt. Swiss-governed, built
-> for peaceful civilian use in regulated industries.
+> Privacy-preserving AI infrastructure. The Zynapse API
+> (https://api.zkagi.ai/v1, OpenAI- and Anthropic-compatible) scrubs sensitive
+> values before a model sees them, routes by privacy lane (fast, tee,
+> frontier) and returns a content-free receipt for every call. Swiss-governed,
+> built for peaceful civilian use in regulated industries.
 
+Short index: https://docs.zkagi.ai/llms.txt
 Canonical docs: https://docs.zkagi.ai · Main site: https://zkagi.ai
 This file concatenates every documentation page for LLM ingestion.
 
+
+
+----------------------------------------
+SOURCE: api/quickstart.md (https://docs.zkagi.ai/docs/api/quickstart)
+----------------------------------------
+
+---
+id: quickstart
+title: Quickstart
+sidebar_position: 1
+description: "Get a zyn_ key and make your first Zynapse API call with curl, the OpenAI SDKs (Python, JS) or the Anthropic SDK. Base URL https://api.zkagi.ai/v1."
+---
+
+# Quickstart
+
+<span className="zk-status zk-status--live">● Live</span>
+
+**In one breath:** the Zynapse API speaks the OpenAI Chat Completions format
+(and the Anthropic Messages format). Point the SDK you already use at
+`https://api.zkagi.ai/v1`, use a `zyn_` key, and pick a **lane** that sets
+how private the call is.
+
+| | |
+|---|---|
+| Base URL (OpenAI format) | `https://api.zkagi.ai/v1` |
+| Base URL (Anthropic SDKs) | `https://api.zkagi.ai` (the SDK adds `/v1/messages`) |
+| Auth | `Authorization: Bearer zyn_...` (or `X-Api-Key: zyn_...`) |
+| Chat | `POST /v1/chat/completions` · `POST /v1/messages` |
+| Discover | `GET /v1/models` · `GET /v1/lanes` · `GET /v1/pricing` (no key needed) |
+
+## 1. Get a key
+
+1. Sign in to zkTerminal and open **[zkterminal.zkagi.ai/id/keys](https://zkterminal.zkagi.ai/id/keys)**.
+2. Name the key and create it. The full key (`zyn_` + 64 hex characters) is
+   shown **once**. Copy it into your secret store. Only a hash of it is kept,
+   so it can't be shown again; if you lose it, make a new one and revoke the old one.
+3. Add credit at **[zkterminal.zkagi.ai/id/credit](https://zkterminal.zkagi.ai/id/credit)**
+   (card or ZKAGI token). An account needs **$10** of credit before its first call,
+   and after that you pay per token at the [published prices](https://api.zkagi.ai/v1/pricing).
+   With no credit, calls return `402` with a message that says so.
+
+You can make up to 20 keys, and you revoke them on the same page. A `zyn_` key
+can call models but **can't make or revoke keys**, so a key that leaks can't
+be used to make more keys.
+
+```bash
+
+```
+
+## 2. First call: curl
+
+```bash
+curl -s https://api.zkagi.ai/v1/chat/completions \
+  -H "Authorization: Bearer $ZYNAPSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "glm-5.3-flash",
+    "lane": "fast",
+    "messages": [{"role": "user", "content": "Say hello in five words."}]
+  }'
+```
+
+If you leave out `lane`, a developer key uses the `fast` lane. If you leave out
+`model`, the call goes to `glm-5.3-flash`. To run the same call in an attested
+GPU TEE, set `"lane": "tee"`.
+
+## 3. OpenAI Python SDK
+
+```python
+
+from openai import OpenAI
+
+client = OpenAI(base_url="https://api.zkagi.ai/v1", api_key=os.environ["ZYNAPSE_API_KEY"])
+
+resp = client.chat.completions.create(
+    model="kimi-k3",
+    messages=[{"role": "user", "content": "Summarise this note: ..."}],
+    extra_body={"lane": "tee"},          # or model="kimi-k3:tee", or header X-Zynapse-Lane
+)
+print(resp.choices[0].message.content)
+print(resp.model)                        # e.g. "zynapse/kimi-k3": the model that served it
+```
+
+## 4. OpenAI JS / TypeScript SDK
+
+```ts
+
+
+const client = new OpenAI({
+  baseURL: "https://api.zkagi.ai/v1",
+  apiKey: process.env.ZYNAPSE_API_KEY,
+});
+
+const resp = await client.chat.completions.create({
+  model: "glm-5.3-flash:fast",           // model:lane suffix works in any client
+  messages: [{ role: "user", content: "Write a haiku about receipts." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+## 5. Anthropic SDK (`/v1/messages`)
+
+The Anthropic SDKs add `/v1/messages` themselves, so their base URL has **no `/v1`**.
+
+```python
+
+
+
+client = anthropic.Anthropic(
+    base_url="https://api.zkagi.ai",
+    api_key=os.environ["ZYNAPSE_API_KEY"],      # sent as x-api-key, which the gateway accepts
+)
+
+msg = client.messages.create(
+    model="kimi-k3",
+    max_tokens=512,
+    messages=[{"role": "user", "content": "Explain TEEs in two sentences."}],
+    extra_headers={"X-Zynapse-Lane": "tee"},
+)
+print(msg.content[0].text)
+```
+
+`/v1/messages` runs through the same pipeline: lanes, scrubbing, tools,
+images and streaming. **A Claude model id alone does not reach Claude.**
+Closed models are served only on `lane=frontier`, and only for accounts that
+have opted in (see [lanes](/docs/api/how-it-works#lanes)). Without that lane,
+the call is served by an open model on the private lane. Check `model` in the
+response to see which one.
+
+## 6. Read what came back
+
+Every non-streaming response has a `zynapse` object next to the usual fields:
+
+```json
+"zynapse": {
+  "lane": "tee",
+  "served_by": "moonshotai/kimi-k3",
+  "privacy_tier": "TEE",
+  "closed_model": false,
+  "original_values_left_device": false,
+  "sensitive_items_removed_before_send": {"EMAIL": 1},
+  "receipt_id": "rcpt_3f9a...",
+  "receipt_url": "https://api.zkagi.ai/r/rcpt_3f9a...",
+  "cost_usd": 0.000412,
+  "balance_usd": 18.73
+}
+```
+
+Open `receipt_url` in a browser, or add `?format=json`. The receipt holds
+amounts, counts and hashes, **never your prompt or the answer**.
+[How receipts work →](/docs/api/how-it-works#receipts)
+
+## Next
+
+- [How the Zynapse API works](/docs/api/how-it-works): lanes, model choice, scrubbing, headers, receipts
+- [Use it from chat apps, agent frameworks and coding agents](/docs/api/integrations): LibreChat, Open WebUI, Claude Code, Hermes, LangChain and others
+- [Images, voice, speech and documents](/docs/api/multimodal)
+- [Endpoint reference](/docs/api/zynapse)
+- For AI agents: [`/llms.txt`](https://docs.zkagi.ai/llms.txt)
+
+
+----------------------------------------
+SOURCE: api/how-it-works.md (https://docs.zkagi.ai/docs/api/how-it-works)
+----------------------------------------
+
+---
+id: how-it-works
+title: How the Zynapse API works
+sidebar_position: 2
+description: "Lanes (fast, tee, frontier), how a model is chosen, PII scrubbing and rehydration, the zynapse response block, request headers, errors and receipts."
+---
+
+# How the Zynapse API works
+
+<span className="zk-status zk-status--live">● Live</span>
+
+Zynapse is a gateway at `https://api.zkagi.ai/v1`. It speaks the OpenAI Chat
+Completions format (`POST /v1/chat/completions`) and the Anthropic Messages
+format (`POST /v1/messages`). Both formats run the same steps on every call:
+
+1. **Authenticate** the `zyn_` key and find its account.
+2. **Pick the lane**, which decides who may see the request (see below).
+3. **Scrub**: sensitive values (emails, phone numbers, card numbers and the
+   like) are replaced by placeholders such as `[EMAIL_1]` *on the gateway*,
+   before anything is sent to a model host.
+4. **Hold** an estimate of the cost on your balance, call the model, then
+   **settle** the real token cost.
+5. **Rehydrate**: placeholders in the answer, and in any tool-call arguments,
+   are swapped back for your real values, so you see real data.
+6. **Receipt**: a content-free record of the call is stored and linked from the response.
+
+The original values stay on the gateway; only scrubbed text goes on to the model host.
+
+## Lanes {#lanes}
+
+A lane is a privacy promise. Pick the lane first, then the model.
+
+| Lane | What serves it | What is guaranteed | Price |
+|---|---|---|---|
+| `fast` | Open-weight models at a host bound by a **zero-data-retention** contract | Scrubbed before send; zero retention is required on every request. No hardware proof. | list price (×1.0) |
+| `tee` | Open-weight models inside an **attested GPU TEE** (Phala Cloud) | Scrubbed before send; the gateway verifies the TEE's attestation, pins the upstream sessions and checks the signed response receipt. **Fails closed**: no attested session means an error, never a quiet fallback to a weaker lane. | ×1.5 |
+| `frontier` | **Closed models**: Claude via the Anthropic API | **Always** scrubbed (it can't be turned off on this lane), so the provider sees placeholders, not your values. **No** zero-retention contract and **no** hardware guarantee; the provider's API terms apply. **Opt-in per account.** | provider list price + 12% |
+
+`GET /v1/lanes` returns this table live, with each lane's current status.
+`mpc` and `obfuscated` are listed there as `coming`; calling them returns
+`501`. `GET /v1/pricing` gives per-model prices in US$ per million tokens.
+
+**Frontier is opt-in.** An account that has not been enabled gets
+`403 the frontier lane (closed models) is not enabled for this account`.
+[Ask us](/contact) to turn it on. No other lane ever downgrades to frontier.
+
+### Three ways to set the lane
+
+Use whichever your client lets you set. The model suffix is checked first,
+then the body field, then the header.
+
+```text
+model suffix   "model": "kimi-k3:tee"
+body field     "lane": "tee"                   (OpenAI SDK: extra_body={"lane": "tee"})
+header         X-Zynapse-Lane: tee
+```
+
+If you set none of them, a developer key uses `fast`.
+
+## Which model answers {#models}
+
+| You send | Served by |
+|---|---|
+| no `model` | `glm-5.3-flash` on the lane |
+| an alias: `zynapse-fast` · `zynapse-balanced` · `zynapse-max` | `glm-5.3-flash` · `glm-5.3-flash` · `kimi-k3`, on the lane |
+| a model id plus a lane | that model, on that lane, with the exceptions below |
+| `lane=frontier` with a Claude id | exactly that Claude model. With no model, `claude-sonnet-5-5`. |
+
+Live model ids (`GET /v1/models` lists the open ones; frontier ids are in `GET /v1/lanes`):
+
+- **fast (zero-data-retention):** `deepseek-v4.1-flash`, `glm-5.3-flash`, `glm-5.3`, `kimi-k3`.
+  Older ids that are also listed (`deepseek-v4-flash-0731`, `qwen3.8-27b`,
+  `qwen3.6-35b-a3b`, `glm-5.1`, `glm-5.2`, `kimi-k2.6`) are not
+  zero-retention at the host, so on `fast` they are **served by a
+  zero-retention substitute** (`glm-5.3-flash`, `glm-5.3` or `kimi-k3`).
+- **tee (attested):** `glm-5.3-flash`, `glm-5.3`, `kimi-k3`, `deepseek-v4-flash-0731`
+  (also used for `deepseek-v4.1-flash`), `qwen3.8-27b` and `gemma-4-31b-it`
+  (TEE only; asking for it on `fast` returns `400` telling you to use `lane=tee`).
+  When a model has no attested session at that moment, the call moves to
+  another **attested** model on the same lane. It never drops to `fast`.
+- **frontier (closed, opt-in):** `claude-sonnet-5-5`, `claude-haiku-5-5`,
+  `claude-opus-5-5`, `claude-fable-5-1`. `argon-4` is listed but not yet
+  sold ("rate pending" in `/v1/pricing`).
+
+**Always check what served the call.** The response's `model`
+(`zynapse/<id>`) and `zynapse.served_by` name the model that actually
+answered, including after a substitution or TEE fallback. On `fast` and
+`tee`, an id the gateway does not recognise is served by the default model
+(`glm-5.3-flash`) and does **not** return an error, so check `model`. On
+`frontier`, an unknown id returns `400` with the list of frontier models.
+
+**A closed model is never reached without `lane=frontier`.** If you send
+`"model": "claude-sonnet-5-5"` with no lane, an open model on your private
+lane answers.
+
+:::note
+Private deployments (a sealed router run inside a customer's own cloud,
+[by arrangement](/contact)) also offer `zynapse-auto`, which picks the
+cheapest model in the lane that is expected to pass the request, and they
+return `400` for unknown ids on every lane. **The public gateway at
+`api.zkagi.ai` does not offer `zynapse-auto` today.**
+:::
+
+## Scrubbing and rehydration {#scrubbing}
+
+- Before the call goes out, the gateway's detectors find sensitive spans in
+  every text part of every message: emails, phone numbers, national ID
+  numbers, IBANs, card numbers, dates and similar. Each one becomes a typed
+  placeholder (`[EMAIL_1]`, `[PHONE_1]`, ...). The same value gets the same
+  placeholder throughout a request.
+- The answer comes back with the placeholders replaced by the originals.
+  **Tool-call arguments are rehydrated too**, so an agent can act on the real
+  email address. When that history comes back in the next turn, the
+  arguments are scrubbed again before they go upstream.
+- Images, video and audio data are not altered; the text around them is scrubbed.
+- `zynapse.sensitive_items_removed_before_send` gives counts per category
+  (for example `{"EMAIL": 2}`), never the values themselves.
+- An account can choose to keep some categories unscrubbed on `fast` and
+  `tee`. On `frontier`, scrubbing is always on.
+
+Scrubbing is detection. It catches the patterns it is built for. It is not a
+guarantee that no sensitive text gets through, which is why `tee` exists for
+data that must not be seen at all.
+
+## The `zynapse` response block {#response}
+
+Every non-streaming response from `/v1/chat/completions` and from
+`/v1/messages` has a `zynapse` object:
+
+| Field | Meaning |
+|---|---|
+| `lane` | the lane that served the call |
+| `served_by`, `serving` | the model, and in plain words where it ran |
+| `privacy_tier` | `ZDR`, `TEE` or `NONE` (frontier) |
+| `closed_model` | `true` only on frontier |
+| `original_values_left_device` | `false`: the originals stayed on the gateway |
+| `third_party_saw` | frontier only: "the scrubbed prompt (placeholders, not the original values)" |
+| `verified_by` | what was actually checked (for example scrub + rehydrate + attestation + signed receipt) |
+| `tee` | tee only: the attestation summary, pinned sessions, `response_sha256` and the receipt verification status |
+| `sensitive_items_removed_before_send` | counts per category |
+| `receipt_id`, `receipt_url` | the stored receipt |
+| `cost_usd`, `balance_usd` | what this call cost and what is left |
+
+**Streaming responses carry no `zynapse` block.** Find the receipt from the
+chunk `id` instead: `zyn-XXXX` maps to `rcpt_XXXX` (and `msg_XXXX` on
+`/v1/messages`).
+
+## Headers {#headers}
+
+Request headers the gateway reads:
+
+| Header | Effect |
+|---|---|
+| `Authorization: Bearer zyn_...` or `X-Api-Key: zyn_...` | auth |
+| `X-Zynapse-Lane: fast\|tee\|frontier` | sets the lane |
+| `X-Zynapse-Brain: off` | for an account that has a Company Brain: don't add its passages to this call (same as body `"brain": false`) |
+
+Chat responses carry **no `x-zynapse-*` response headers**. Everything about
+the call is in the `zynapse` block and the receipt. The speech endpoint is the
+exception (see [Multimodal](/docs/api/multimodal#tts)).
+
+## Receipts {#receipts}
+
+- `GET https://api.zkagi.ai/r/{receipt_id}` shows a readable page. Add
+  `?format=json`, or send `Accept: application/json`, to get JSON.
+  `GET /v1/receipts/{receipt_id}` also returns JSON.
+- A receipt holds the lane, the model, what was verified, category counts,
+  token counts, cost and timings: **amounts, counts and hashes, never prompt
+  or answer text**. Anyone who has the id can open it, so treat the id like a
+  link you would share.
+- On `tee`, the check of the signed response receipt runs right after the
+  answer is delivered. The response says `"verified": "pending"`, and the
+  stored receipt is updated with the result. Fetch it again a moment later to
+  see the final status.
+- `GET /v1/tee/attestation` returns the gateway's latest verified TEE
+  attestation, including the raw report, so you can verify the quote yourself.
+
+## Errors {#errors}
+
+Errors use the OpenAI shape, so SDKs show the real reason:
+
+```json
+{"error": {"message": "the frontier lane (closed models) is not enabled for this account; use lane=fast or lane=tee, or ask zkAGI to enable it",
+           "type": "permission_error", "param": null, "code": "403"},
+ "detail": "..."}
+```
+
+| Status | Usual cause |
+|---|---|
+| 400 | bad body, a lane name that doesn't exist, a TEE-only model on `fast`, an unknown frontier model, an unsupported attachment |
+| 401 | missing or invalid key |
+| 402 | not enough credit (below the $10 start, or the balance can't cover the hold) |
+| 403 | frontier not enabled for this account |
+| 429 | rate limited; back off and retry |
+| 501 | `mpc` / `obfuscated` lanes (coming) |
+| 503 | the provider is unavailable, or no attested TEE session right now; retry |
+
+During a stream, an error comes as a final `data: {"error": {...}}` frame
+followed by `data: [DONE]`.
+
+
+----------------------------------------
+SOURCE: api/integrations.md (https://docs.zkagi.ai/docs/api/integrations)
+----------------------------------------
+
+---
+id: integrations
+title: Chat apps, agents and coding agents
+sidebar_position: 3
+description: "Connect LibreChat, Open WebUI, Claude Code, the Claude Agent SDK, Hermes Agent, the OpenAI Agents SDK, LangChain, the Vercel AI SDK, aider and Cline to Zynapse. Includes tool calling and streaming."
+---
+
+# Chat apps, agents and coding agents
+
+<span className="zk-status zk-status--live">● Live</span>
+
+Any client that lets you set an **OpenAI-compatible base URL** works with
+Zynapse. So does any client that lets you set an **Anthropic base URL**.
+
+| You need | Value |
+|---|---|
+| OpenAI-compatible base URL | `https://api.zkagi.ai/v1` |
+| Anthropic base URL | `https://api.zkagi.ai` |
+| API key | your `zyn_...` key ([get one](/docs/api/quickstart#1-get-a-key)) |
+| Model | an id such as `glm-5.3-flash`, `kimi-k3` or `gemma-4-31b-it` |
+| Lane | `fast` (the default for a key), `tee` or `frontier` (opt-in) |
+
+**If your client can't send a custom body field or header, put the lane in
+the model id:** `kimi-k3:tee`, `glm-5.3-flash:fast`, `claude-sonnet-5-5:frontier`.
+Every client can send a model id.
+
+Only Chat Completions (`/v1/chat/completions`) and Messages (`/v1/messages`)
+are served. Clients that **only** speak the OpenAI Responses API
+(`/v1/responses`) or the Realtime API won't work. Point them at Chat
+Completions if they have the option.
+
+## Chat apps
+
+### LibreChat
+
+Add a custom endpoint to `librechat.yaml` and put the key in LibreChat's `.env`:
+
+```yaml
+endpoints:
+  custom:
+    - name: "Zynapse"
+      apiKey: "${ZYNAPSE_API_KEY}"
+      baseURL: "https://api.zkagi.ai/v1"
+      models:
+        default: ["glm-5.3-flash:fast", "kimi-k3:fast", "kimi-k3:tee", "gemma-4-31b-it:tee"]
+        fetch: false            # /v1/models lists ids without lanes; list the ones you want
+      titleConvo: true
+      titleModel: "glm-5.3-flash:fast"
+      modelDisplayLabel: "Zynapse"
+```
+
+LibreChat's text-to-speech and speech-to-text can also point at Zynapse's
+OpenAI-compatible [`/v1/audio/speech` and `/v1/audio/transcriptions`](/docs/api/multimodal).
+
+### Open WebUI
+
+**Admin Settings → Connections → OpenAI API → +**
+
+- URL: `https://api.zkagi.ai/v1`
+- Key: your `zyn_` key
+- Model IDs: leave the list empty to use `/v1/models`, which shows the open
+  models on the `fast` lane. To use `tee`, add ids with the suffix, such as `kimi-k3:tee`.
+
+### Any other OpenAI-compatible app
+
+TypingMind, Chatbox, Msty, Jan, and the "OpenAI-compatible" or "custom
+provider" setting in other apps all take the same three values: base URL
+`https://api.zkagi.ai/v1`, your key, and a model id (with `:lane` if you
+want a lane other than `fast`).
+
+## Coding agents
+
+### Claude Code
+
+Claude Code speaks the Anthropic Messages API, so point it at the gateway's
+`/v1/messages`. Set the lane with a header and name the model explicitly.
+Claude Code's own model names are only served on `frontier`.
+
+**Private (open model in an attested TEE):**
+
+```bash
+
+
+
+
+
+
+
+claude
+```
+
+**Claude, scrubbed (needs frontier enabled on your account):**
+
+```bash
+
+
+
+
+
+
+
+claude
+```
+
+On `frontier`, Claude sees your code with sensitive values replaced by
+placeholders, and the answer is rehydrated. Placeholders cover patterns
+such as emails, phone numbers and card numbers, not source code in general.
+For code that must not leave your control at all, use `tee`.
+
+The same variables work for the **Claude Agent SDK**. Only `POST /v1/messages`
+is implemented; other Anthropic paths (token counting, batches, files)
+return `404`.
+
+### Hermes Agent
+
+In Hermes's `config.yaml`, use a custom OpenAI-compatible provider:
+
+```yaml
+model:
+  provider: custom
+  base_url: https://api.zkagi.ai/v1
+  default: kimi-k3:tee
+  api_key: zyn_...        # keep this file out of version control
+```
+
+### aider, Cline, Roo Code, Continue, opencode and other OpenAI-compatible agents
+
+Choose the "OpenAI Compatible" provider, then set the base URL to
+`https://api.zkagi.ai/v1`, the key, and a model id with its lane. For aider:
+
+```bash
+
+
+aider --model openai/kimi-k3:tee
+```
+
+For agentic coding, `kimi-k3` is the strongest open model offered, and
+`glm-5.3-flash` is the fastest and cheapest.
+
+## Agent frameworks
+
+### OpenAI Agents SDK (Python)
+
+Use Chat Completions. Turn tracing off, or it will try to send traces to OpenAI.
+
+```python
+
+from openai import AsyncOpenAI
+from agents import (Agent, Runner, set_default_openai_api,
+                    set_default_openai_client, set_tracing_disabled)
+
+set_default_openai_client(AsyncOpenAI(base_url="https://api.zkagi.ai/v1",
+                                      api_key=os.environ["ZYNAPSE_API_KEY"]),
+                          use_for_tracing=False)
+set_default_openai_api("chat_completions")
+set_tracing_disabled(True)
+
+agent = Agent(name="assistant", instructions="Be brief.", model="kimi-k3:tee")
+print(Runner.run_sync(agent, "What is a TEE?").final_output)
+```
+
+### LangChain
+
+```python
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(model="kimi-k3", base_url="https://api.zkagi.ai/v1",
+                 api_key=os.environ["ZYNAPSE_API_KEY"], extra_body={"lane": "tee"})
+```
+
+### Vercel AI SDK
+
+```ts
+
+
+
+const zynapse = createOpenAICompatible({
+  name: "zynapse",
+  baseURL: "https://api.zkagi.ai/v1",
+  apiKey: process.env.ZYNAPSE_API_KEY,
+});
+const { text } = await generateText({ model: zynapse("glm-5.3-flash:fast"), prompt: "Hi" });
+```
+
+### LlamaIndex
+
+```python
+from llama_index.llms.openai_like import OpenAILike
+
+llm = OpenAILike(model="kimi-k3:tee", api_base="https://api.zkagi.ai/v1",
+                 api_key=os.environ["ZYNAPSE_API_KEY"],
+                 is_chat_model=True, is_function_calling_model=True)
+```
+
+## Tool calling
+
+OpenAI `tools` / `tool_choice` and Anthropic `tools` / `tool_use` /
+`tool_result` both work on every lane. Arguments are rehydrated before you
+receive them, and scrubbed again when your history comes back.
+
+```python
+tools = [{"type": "function", "function": {
+    "name": "get_weather",
+    "description": "Current weather for a city",
+    "parameters": {"type": "object", "properties": {"city": {"type": "string"}},
+                   "required": ["city"]}}}]
+
+r = client.chat.completions.create(model="kimi-k3", tools=tools,
+        messages=[{"role": "user", "content": "Weather in Zurich?"}],
+        extra_body={"lane": "tee"})
+call = r.choices[0].message.tool_calls[0]
+# run the tool, then send back {"role": "tool", "tool_call_id": call.id, "content": "..."}
+```
+
+On `tee`, if the requested model has no attested session at that moment, a
+call that carries tools moves to another attested model **that calls tools
+reliably** (`kimi-k3`, `deepseek-v4-flash-0731`, `gemma-4-31b-it`).
+
+## Streaming
+
+Set `"stream": true`. Responses are standard Server-Sent Events.
+
+```python
+stream = client.chat.completions.create(model="glm-5.3-flash", stream=True,
+            messages=[{"role": "user", "content": "Count to five."}])
+for chunk in stream:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)
+```
+
+- Deltas, including tool-call deltas, are relayed as the model produces them.
+- While the model is thinking, an **empty-delta chunk** is sent about every
+  5 seconds so proxies and client timeouts don't drop the connection.
+  Standard SDKs ignore these chunks.
+- The last chunk carries `finish_reason` and `usage`. Then comes `data: [DONE]`.
+- On `/v1/messages`, the stream is Anthropic-style: `message_start`,
+  `content_block_*`, `message_delta`, `message_stop`, with `ping` events as
+  the heartbeat.
+- Streamed responses have no `zynapse` block. The chunk `id` `zyn-XXXX` maps
+  to receipt `rcpt_XXXX`.
+- If you close the connection, the model call stops. You are billed for the
+  input plus what was already streamed to you.
+
+
+----------------------------------------
+SOURCE: api/multimodal.md (https://docs.zkagi.ai/docs/api/multimodal)
+----------------------------------------
+
+---
+id: multimodal
+title: Images, voice, speech and documents
+sidebar_position: 4
+description: "What the Zynapse gateway serves beyond text: image and video input, voice notes, speech-to-text, text-to-speech and document text extraction. Plus what it does not serve."
+---
+
+# Images, voice, speech and documents
+
+<span className="zk-status zk-status--live">● Live</span>
+
+This page lists exactly what `api.zkagi.ai` serves beyond text.
+
+| Capability | Endpoint | Status |
+|---|---|---|
+| Image input in chat | `/v1/chat/completions`, `/v1/messages` | ● Live: fast, tee, frontier |
+| Video input in chat | `/v1/chat/completions` | ● Live: **tee lane only** |
+| Voice notes in chat (transcribed on the gateway) | `/v1/chat/completions` | ● Live |
+| Speech-to-text | `POST /v1/audio/transcriptions` | ● Live |
+| Text-to-speech | `POST /v1/audio/speech` | ● Live |
+| Document text extraction (PDF, DOCX, images, text) | `POST /v1/files/extract` | ● Live |
+| Image generation, video generation, embeddings | — | **Not served** by this gateway |
+
+## Image input {#images}
+
+Send OpenAI-style content parts. **Attachments must be inline `data:` URLs.**
+A link to a hosted image is refused with `400`.
+
+```python
+
+img = base64.b64encode(open("receipt.png", "rb").read()).decode()
+
+r = client.chat.completions.create(
+    model="gemma-4-31b-it",
+    extra_body={"lane": "tee"},
+    messages=[{"role": "user", "content": [
+        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img}"}},
+        {"type": "text", "text": "What is the total on this receipt?"},
+    ]}],
+)
+```
+
+- **Formats:** PNG, JPEG, GIF, WebP, BMP. The gateway checks the file's
+  actual bytes, so an HTML or SVG file labelled as `image/png` is refused.
+- **Limits:** 10 attachments per request; 10 MB per image, 20 MB per other attachment.
+- **The model is chosen to match.** If the model you asked for can't read
+  images, a vision model on the same lane serves the call: `glm-5.3-flash`
+  on `fast` (`deepseek-v4.1-flash` and `kimi-k3` also read images there), and
+  `qwen3.8-27b` on `tee` (`gemma-4-31b-it`, `kimi-k3` and `glm-5.3-flash`
+  also read images there). `model` in the response says which model served it.
+- On `frontier`, images go to Claude. On `/v1/messages`, send Anthropic
+  `image` blocks with a `base64` source.
+- The text around an image is scrubbed. The image is not altered, so
+  sensitive text that appears inside the image itself reaches the model host.
+  For images like that, use `tee`.
+- Count roughly 1,100 prompt tokens per image when you budget.
+
+## Video input {#video}
+
+Send `{"type": "video_url", "video_url": {"url": "data:video/mp4;base64,..."}}`
+(MP4, WebM or QuickTime) with `lane=tee`. The video-capable TEE models are
+`gemma-4-31b-it`, `qwen3.8-27b` and `kimi-k3`. On other lanes, video returns
+`400` asking you to switch to TEE.
+
+## Voice notes in chat {#voice-notes}
+
+An audio part in a chat message is transcribed **on the gateway**
+(faster-whisper on CPU). Only the transcript, scrubbed like any other text,
+goes to the model. The audio is never sent to a model host or written to disk.
+
+```json
+{"type": "input_audio", "input_audio": {"data": "<base64>", "format": "wav"}}
+```
+
+`{"type": "audio_url", "audio_url": {"url": "data:audio/ogg;base64,..."}}` is
+accepted too. The limits are 25 MB and 5 minutes per clip. The model sees the
+note as `[Voice note transcript] ...`.
+
+## Speech-to-text {#stt}
+
+OpenAI-compatible, multipart:
+
+```bash
+curl -s https://api.zkagi.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $ZYNAPSE_API_KEY" \
+  -F file=@note.m4a
+# {"text": "..."}         add -F response_format=text for plain text
+```
+
+```python
+text = client.audio.transcriptions.create(model="whisper-1", file=open("note.m4a", "rb")).text
+```
+
+The `model` field is accepted but ignored: the gateway runs its own
+faster-whisper. Transcription happens on the gateway and isn't billed today.
+When the service is busy it returns `503` with `Retry-After: 2`.
+
+## Text-to-speech {#tts}
+
+OpenAI-compatible. Kokoro-82M runs on the gateway's CPU, so the text is
+never sent to a provider to be spoken.
+
+```bash
+curl -s https://api.zkagi.ai/v1/audio/speech \
+  -H "Authorization: Bearer $ZYNAPSE_API_KEY" -H "Content-Type: application/json" \
+  -d '{"input": "Your receipt is ready.", "voice": "af_heart", "response_format": "mp3"}' \
+  -o out.mp3
+```
+
+- `GET /v1/audio/voices` (no key needed) lists the voices, the aliases, the
+  formats (`mp3`, `wav`, `pcm`), the maximum input (4,000 characters) and the
+  price ($0.015 per 1,000 characters).
+- `speed` can be from 0.5 to 2.0. `pcm` (16-bit LE mono, 24 kHz) is streamed
+  sentence by sentence; `mp3` and `wav` arrive whole.
+- Response headers: `X-Zynapse-Voice`, `X-Zynapse-Chars`,
+  `X-Zynapse-Sample-Rate`, `X-Zynapse-Cost-USD`, plus `X-Zynapse-Seconds`
+  for `mp3`/`wav`.
+
+## Document text extraction {#files}
+
+```bash
+curl -s https://api.zkagi.ai/v1/files/extract \
+  -H "Authorization: Bearer $ZYNAPSE_API_KEY" \
+  -F file=@contract.pdf
+# {"text": "...", "pages": 12, "chars": 48211, "kind": "pdf", "cost_usd": 0.024, "name": "contract.pdf"}
+```
+
+PDF, DOCX, images and plain text are parsed in a sandbox on the gateway, at
+**$0.002 per page**. Files can be up to 20 MB, and up to 400,000 characters
+of text come back. Put the text you get into a chat call; it is scrubbed like
+any other message.
+
+`POST /v1/files` keeps a file for 24 hours so zkTerminal's chat tools can read
+it later. `GET /v1/files` lists your files and `DELETE /v1/files/{id}`
+deletes one.
+
+## Not served here
+
+There is no image generation, video generation or embeddings endpoint on
+`api.zkagi.ai`. Older generation endpoints on a separate host are described
+in [Legacy endpoints](/docs/api/legacy); they are not part of this gateway.
+
+
+----------------------------------------
+SOURCE: api/zynapse.md (https://docs.zkagi.ai/docs/api/zynapse)
+----------------------------------------
+
+---
+id: zynapse
+title: Endpoint reference
+sidebar_position: 5
+description: "Every public endpoint of the Zynapse gateway at https://api.zkagi.ai: chat, messages, models, lanes, pricing, receipts, attestation, audio, files and account."
+---
+
+# Endpoint reference
+
+<span className="zk-status zk-status--live">● Live</span>
+
+**Base:** `https://api.zkagi.ai`
+**Auth:** `Authorization: Bearer zyn_...` or `X-Api-Key: zyn_...`, except
+where marked *public*. Request and response bodies are JSON unless noted.
+Errors use the [OpenAI error shape](/docs/api/how-it-works#errors).
+
+## Inference
+
+| Method | Path | Notes |
+|---|---|---|
+| POST | `/v1/chat/completions` | OpenAI Chat Completions. Body adds `lane` (`fast`\|`tee`\|`frontier`) and optionally `brain` (`false` to skip Company Brain passages). Supports `tools`, `tool_choice`, `stream`, `max_tokens` (default 8192) and `temperature` (default 0.2). |
+| POST | `/v1/messages` | Anthropic Messages, over the same pipeline. Supports `system`, `tools`, `tool_choice`, `stream`, and image blocks with a base64 source. |
+
+Lane: model suffix `model:lane`, then body `lane`, then header `X-Zynapse-Lane`.
+The default for a developer key is `fast`. See [How it works](/docs/api/how-it-works).
+
+## Discovery (public)
+
+| Method | Path | Returns |
+|---|---|---|
+| GET | `/v1/models` | open-model ids and aliases (OpenAI list shape) |
+| GET | `/v1/models/{id}` | one model; accepts `id:lane` |
+| GET | `/v1/lanes` | every lane with its status, guarantee and price multiplier; frontier model ids |
+| GET | `/v1/pricing` | US$ per 1M tokens for every model on every lane |
+| GET | `/health` | gateway status and the models live on each lane |
+
+## Receipts and attestation (public)
+
+| Method | Path | Returns |
+|---|---|---|
+| GET | `/r/{receipt_id}` | receipt page; JSON with `?format=json` or `Accept: application/json` |
+| GET | `/v1/receipts/{receipt_id}` | receipt JSON |
+| GET | `/v1/tee/attestation` | the gateway's latest verified TEE attestation, including the raw report (`?fresh=true` attests again) |
+| GET | `/v1/tee/sessions?model=` | the upstream TEE sessions approved to serve a model |
+
+## Audio and files
+
+| Method | Path | Notes |
+|---|---|---|
+| POST | `/v1/audio/transcriptions` | multipart `file`; `response_format=text` for plain text |
+| POST | `/v1/audio/speech` | `{input, voice?, response_format?: mp3\|wav\|pcm, speed?}` |
+| GET | `/v1/audio/voices` | *public*: voices, formats, limits, price |
+| POST | `/v1/files/extract` | multipart `file` → `{text, pages, chars, kind, cost_usd}` |
+| POST · GET · DELETE | `/v1/files`, `/v1/files/{id}` | keep a file for 24 h for zkTerminal chat tools; list; delete |
+
+Details: [Images, voice, speech and documents](/docs/api/multimodal).
+
+## Account
+
+| Method | Path | Notes |
+|---|---|---|
+| GET | `/v1/account` | balance, keys (prefixes only), recent receipts |
+| GET | `/v1/account/statement?month=YYYY-MM` | monthly statement |
+| GET | `/v1/plans` | monthly plans |
+
+**Keys** are made and revoked at
+[zkterminal.zkagi.ai/id/keys](https://zkterminal.zkagi.ai/id/keys) while you
+are signed in. The key routes (`GET/POST /v1/keys`, `DELETE /v1/keys/{prefix}`)
+refuse a `zyn_` key, so a key can't be used to make or revoke other keys.
+**Credit** is added at [zkterminal.zkagi.ai/id/credit](https://zkterminal.zkagi.ai/id/credit).
+
+## Not on this gateway
+
+There are no image or video generation, embeddings, Responses API or Realtime
+endpoints. Older proof and media endpoints are on a separate host:
+[Legacy endpoints](/docs/api/legacy).
+
+
+----------------------------------------
+SOURCE: trust-center/status.md (https://docs.zkagi.ai/docs/trust-center/status)
+----------------------------------------
+
+---
+id: status
+title: Status board
+sidebar_position: 1
+description: "The single source of truth for what's live, what's active R&D, and what's configured per engagement."
+---
+
+# Status board
+
+**This page is the single source of truth** for how far along each capability
+is. If a marketing page and this table ever disagree, this table wins. Last
+reviewed: 7 November 2026.
+
+Legend: <span className="zk-status zk-status--live">● Live</span> serving real
+traffic today · <span className="zk-status zk-status--rnd">◐ Active R&D</span>
+runs and is benchmarked, deployed with design partners under written caveats ·
+<span className="zk-status zk-status--engagement">◇ Per engagement</span>
+assembled with our team for your deployment, scope agreed in writing.
+
+| Capability | Status | Notes |
+|---|---|---|
+| Zynapse gateway, OpenAI-compatible (`/v1/chat/completions`) | ● Live | `https://api.zkagi.ai/v1`; in-perimeter endpoints per engagement |
+| Anthropic-compatible `/v1/messages` (Claude Code, Anthropic SDKs) | ● Live | Same lanes, scrubbing and receipts |
+| `fast` lane: open models, zero-data-retention host | ● Live | deepseek-v4.1-flash, glm-5.3-flash, glm-5.3, kimi-k3. No hardware proof |
+| `tee` lane: open models in an attested GPU TEE | ● Live | Phala Cloud; attestation and signed response receipt checked by the gateway; fails closed. gemma-4-31b-it, kimi-k3, glm-5.3, qwen3.8-27b and others |
+| `frontier` lane: closed models, always scrubbed | ● Live, opt-in | claude-sonnet-5-5, claude-haiku-5-5, claude-opus-5-5, claude-fable-5-1. No zero-retention or hardware guarantee. argon-4 listed, rate pending |
+| PII scrubbing before send, rehydration after (incl. tool-call arguments) | ● Live | Pattern detectors; see [How it works](/docs/api/how-it-works#scrubbing) |
+| Per-call receipts (`/r/{id}`) | ● Live | Content-free: amounts, counts, hashes, verification status |
+| Image input; video input (tee only) | ● Live | Inline data URLs only |
+| Voice notes, speech-to-text, text-to-speech | ● Live | Run on the gateway; audio is not sent to a provider |
+| Document text extraction (`/v1/files/extract`) | ● Live | PDF, DOCX, images, text |
+| `zynapse-auto` model selection | ◇ Per engagement | Private sealed-router deployments only; not on `api.zkagi.ai` |
+| `mpc` and `obfuscated` lanes | ◐ Active R&D | Return 501 on the gateway today |
+| Legacy proof generation, proof-unlocked Q&A, image/video generation (`zynapse.zkagi.ai`) | ◇ Re-checking | Separate older host, not part of the gateway; see [Legacy endpoints](/docs/api/legacy) |
+| Sovereign tier (MPC serving) | ◐ Active R&D | Deployed per engagement; batch latency |
+| Dealer-on-client-device secret sharing | ◐ Active R&D | |
+| Selective disclosure under MPC (private introspection) | ◐ Active R&D | Architecture target; see page caveat |
+| FHE inference variants | ◐ Active R&D | Workload-dependent |
+| Federated learning | ◐ Active R&D | With design partners |
+| Private training / fine-tuning | ◐ Active R&D | |
+| Confidential-hardware serving (NVIDIA CC, TDX, Nitro) | ◇ Per engagement | On attested infrastructure you or your cloud provide |
+| Custom perimeters (on-prem / regional / transcontinental) | ◇ Per engagement | |
+| The Explorer (receipt browser) | ◇ Per engagement | Access on request |
+| Compiler-assembled per-customer stacks | ◐ Active R&D | Done with our team today |
+
+## How to read "Active R&D"
+
+It doesn't mean vaporware, and it doesn't mean production-hardened. It means:
+the capability runs, we measure it, we're honest about its edges, and if it
+matters to your deployment we'll demonstrate it on your data before anything
+is signed. What we won't do is let a slide deck promise it for us.
+
+:::info
+This board is maintained by hand and reviewed with every significant release.
+Questions about a specific line? [Ask us directly](/contact) and you'll get an
+engineer's answer, not a sales answer.
+:::
 
 
 ----------------------------------------
@@ -817,8 +1723,10 @@ curl -s -X POST "https://zynapse.zkagi.ai/v1/ask" \
   -F "proof_file=@proof.json;filename=proof.json;type=application/json"
 ```
 
-Full parameters, error codes and SDK snippets are in the
-[Zynapse API reference](/docs/api/zynapse).
+Full parameters, error codes and SDK snippets are in
+[Legacy endpoints](/docs/api/legacy). These calls run on the older
+`zynapse.zkagi.ai` host, not on the `api.zkagi.ai` gateway, and their
+availability is being re-checked. [Ask us](/contact) before you build on them.
 
 ## Now couple it with the Sovereign tier
 
@@ -924,103 +1832,178 @@ source of truth; your agreement defines what applies to you.
 
 
 ----------------------------------------
-SOURCE: api/quickstart.md (https://docs.zkagi.ai/docs/api/quickstart)
+SOURCE: trust-center/disclosures.md (https://docs.zkagi.ai/docs/trust-center/disclosures)
 ----------------------------------------
 
 ---
-id: quickstart
-title: Quickstart
-sidebar_position: 1
-description: "If you can call OpenAI, you can call this. First private inference and first receipt in five minutes."
+id: disclosures
+title: Disclosures
+sidebar_position: 3
+description: "The fine print, said plainly: R&D status, per-engagement configuration, and where compliance responsibility lives."
 ---
 
-# Quickstart
+# Disclosures
 
-<span className="zk-status zk-status--live">● Live</span>
+The fine print, said plainly. We'd rather you read this now than discover it
+in a contract later.
 
-**In one breath:** point the OpenAI SDK you already use at a new base URL,
-and every response comes back wearing a receipt.
+## 1. Some of this is live. Some is active R&D.
 
-## 1. Get a key
+We are a research lab as much as a product company. Parts of what these docs
+describe run in production today; others are under active research and
+development, and capabilities land at different times. The
+[Status board](/docs/trust-center/status) is the single source of truth, and
+before you commit to anything we'll tell you exactly which pieces are ready
+for your use case and which are still on the bench.
 
-Keys are issued through your workspace admin or [by talking to us](/contact).
-If your deployment is in-perimeter, your endpoint URL is your own; the
-examples below use the hosted one.
+## 2. Configured with you, not off the shelf.
 
-## 2. Make your first call
+Deployments are assembled per customer and validated to your satisfaction
+before go-live. That's the point of the compiler. It also means we do not
+promise that every capability described in these docs exists as a general,
+ready-made feature for every workload. What we deliver for you is what we
+agree with you, in writing. Your agreement with zkAGI defines the guarantees,
+availability and service levels that apply, and that agreement is what
+governs, over anything on this site.
 
-```python
-from openai import OpenAI
+## 3. Your audit stays your audit.
 
-client = OpenAI(
-    base_url="https://infer.zkagi.ai/v1",
-    api_key="zk-...",
-)
+zkAGI is not an audit firm, and our inference service has not itself been
+audited or certified against HIPAA, GDPR, the EU AI Act, or any similar
+framework. Compliance responsibility stays with you, the customer. Our job is
+to make that job easier: receipts, attestations and documentation built to be
+handed to your auditor, plus hands-on help getting ready. **We assist with
+audit preparation; we do not conduct audits, issue certifications, or give
+legal advice.** Regulatory mappings in these docs (for example, the table on
+the [Receipts](/docs/platform/receipts) page) are orientation guidance for
+your compliance team, nothing more.
 
-resp = client.chat.completions.create(
-    model="zk-default",
-    messages=[{"role": "user", "content": "Summarize this clinical note: ..."}],
-    extra_body={"tier": "private"},   # foothill | private | sovereign
-)
-print(resp.choices[0].message.content)
-```
+## 4. Benchmarks are ours unless stated otherwise.
 
-Same shape in curl:
+Figures like token-recovery bounds are produced by our own benchmark suites
+under stated conditions. They are honest, repeatable, and not a substitute for
+third-party validation. Where a specific deployment needs independent
+measurement, we'll support it.
 
-```bash
-curl -s https://infer.zkagi.ai/v1/chat/completions \
-  -H "Authorization: Bearer $ZKAGI_KEY" \
-  -d '{"model":"zk-default","tier":"private","messages":[{"role":"user","content":"..."}]}'
-```
+## 5. Peaceful use only.
 
-## 3. Meet your receipt
+zkAGI is built for peaceful, civilian use: business productivity in regulated
+industries. We do not take defense or other dual-use work.
 
-Every response carries one:
+## 6. Trademarks and names.
 
-```json
-"receipt": {
-  "trust_domain": "mathematics",
-  "tier": "private",
-  "egress": "none",
-  "proof": "stark:0x9f3a"
-}
-```
+NVIDIA, Intel TDX, AWS Nitro, Azure Confidential and similar names are
+trademarks of their respective owners, referenced for comparison and
+compatibility description only. OpenAI compatibility refers to API-shape
+compatibility with the OpenAI client SDKs, and implies no affiliation.
 
-Keep it. It's the [compliance artifact](/docs/platform/receipts) your future
-self hands to an auditor.
+---
 
-## 4. Go deeper
+*Questions about any of this deserve a human answer:*
+[*talk to us*](/contact)*. Nothing on this page or this site is legal advice.*
 
-- Ask questions of your own documents with a [proof as the key](/docs/platform/selective-disclosure)
-- Turn the tier up to [sovereign](/docs/trust/tiers) for your batch workloads
-- Browse the full [Zynapse API reference](/docs/api/zynapse) for proofs, media generation and key management
 
-:::caution Where this stands
-The hosted endpoint, tiers Standard and Private, and receipts are live. The
-`sovereign` tier value routes to the MPC path, which is active R&D and
-enabled per engagement. Endpoint names and fields shown here can evolve while
-we're pre-GA; the [Status board](/docs/trust-center/status) tracks it.
+----------------------------------------
+SOURCE: trust-center/security-model.md (https://docs.zkagi.ai/docs/trust-center/security-model)
+----------------------------------------
+
+---
+id: security-model
+title: Security model
+sidebar_position: 2
+description: "The assumptions we make, stated plainly, because a guarantee is only as good as the assumptions under it."
+---
+
+# Security model
+
+**In one breath:** every privacy guarantee stands on assumptions. Here are
+ours, stated plainly, because your security team will ask and they deserve a
+straight answer.
+
+## What we assume, per anchor
+
+### Mathematics (MPC / secret sharing)
+
+- **Non-collusion.** Shares of your data go to operator-disjoint nodes. The
+  guarantee is information-theoretic *provided the operators don't all
+  conspire*. This is the standard MPC assumption, and we strengthen it by
+  placing operators in different organizations and jurisdictions.
+- **The dealer.** Someone has to split the data into shares. That role can run
+  on **your own device**, so shares are created inside your walls. If you let
+  a server deal instead, that server momentarily holds the input, and your
+  threat model should account for it. We default to client-side dealing where
+  the workload allows.
+- **Masking is not magic.** Lightweight masked serving (our Private tier) has
+  measured, non-zero recovery bounds, and a serving node that knows exactly
+  which model it runs can in principle attack a masking. That's why bounds are
+  benchmarked and published per deployment, and why higher-sensitivity work
+  belongs at the Sovereign tier.
+
+### Silicon (confidential computing)
+
+- **The vendor's root of trust.** Enclave guarantees (NVIDIA confidential
+  computing on GPUs, Intel TDX, AWS Nitro) rest on the hardware vendor's
+  silicon, microcode and attestation service. If your framework can't accept
+  a hardware vendor in the trust chain, use the mathematics anchor.
+- **Side channels exist.** Confidential computing narrows the attack surface;
+  it doesn't abolish physics. We treat enclaves as a strong layer, best used
+  hybrid.
+
+### Both anchors
+
+- **Receipts prove computation, not intent.** A STARK receipt proves the
+  declared computation ran correctly on the declared configuration. It cannot
+  prove that no other copy of unencrypted data existed somewhere it was never
+  supposed to be. Perimeter and anchor choices are what prevent that; the
+  receipt is what evidences them.
+- **Keys and clients.** If your API key leaks or the client machine that
+  generates proofs is compromised, cryptography downstream can't save you.
+  Standard key hygiene applies; rotation is built into the API.
+
+## What we deliberately don't claim
+
+- We don't claim "100% privacy" as a blanket. We state which property holds
+  (e.g. information-theoretic under non-collusion) and where it applies.
+- We don't claim certifications we don't hold. See
+  [Disclosures](/docs/trust-center/disclosures).
+- We don't claim the platform is finished. See the
+  [Status board](/docs/trust-center/status).
+
+## Peaceful use, in writing
+
+zkAGI is built for peaceful, civilian use: business productivity in regulated
+industries such as healthcare, banking and legal. We don't take defense or
+other dual-use work. If that costs us a deal, so be it.
+
+:::info Found something?
+If you believe you've found a vulnerability, [contact us](/contact) with
+"SECURITY" in the subject and we'll respond fast. We're grateful to everyone
+who kicks the tires.
 :::
 
 
 ----------------------------------------
-SOURCE: api/zynapse.md (https://docs.zkagi.ai/docs/api/zynapse)
+SOURCE: api/legacy.md (https://docs.zkagi.ai/docs/api/legacy)
 ----------------------------------------
 
 ---
-id: zynapse
-title: Zynapse API reference
-sidebar_position: 2
-description: "Full reference for the Zynapse API: client-side proofs, proof-unlocked Q&A, media generation, and key management."
+id: legacy
+title: Legacy endpoints (zynapse.zkagi.ai)
+sidebar_position: 9
+description: "Older proof, document Q&A and media-generation endpoints on zynapse.zkagi.ai. Not part of the api.zkagi.ai gateway."
 ---
 
+# Legacy endpoints (zynapse.zkagi.ai)
 
+:::caution Not the current API
+These endpoints live on a **separate, older host** (`zynapse.zkagi.ai`), use
+`X-API-Key` keys that are separate from `zyn_` keys, and are **not part of the
+gateway at `api.zkagi.ai`**. Their availability is being re-checked. For new
+work, use the [Quickstart](/docs/api/quickstart). [Ask us](/contact) before
+you build on anything on this page.
+:::
 
-# Zynapse API reference
-
-<span className="zk-status zk-status--live">● Live</span>
-
-Welcome to the Zynapse API. These endpoints let you generate privacy-preserving
+These endpoints let you generate privacy-preserving
 proofs for documents on the client side, run Q&A sessions unlocked by those
 proofs ([how that works](/docs/platform/selective-disclosure)), and create
 media. Admin endpoints cover user management and the API key lifecycle.
@@ -1473,244 +2456,7 @@ app.post('/delete-api-key', async (req, res) => {
 
 ## Related reading
 
-- [Quickstart: your first call and first receipt](/docs/api/quickstart)
+- [Quickstart: the current API](/docs/api/quickstart)
 - [Selective disclosure: how a proof unlocks a session](/docs/platform/selective-disclosure)
 - [Receipts and what they evidence](/docs/platform/receipts)
 - [Status board: what's live vs R&D](/docs/trust-center/status)
-
-<Head>
-  <script type="application/ld+json">
-  {JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      { "@type": "Question", "name": "How do I authenticate with the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "All Zynapse API endpoints require an API key passed via the X-API-Key header unless explicitly noted otherwise. Keep your keys secret, and use the admin endpoints to rotate or revoke them when needed." } },
-      { "@type": "Question", "name": "How do I ask questions with proof using the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "Send a POST request to /v1/ask with your question and a proof JSON file to perform Q&A over your document set with cryptographic proof attachment. The proof file must first be generated via the /v1/generate_proof endpoint." } },
-      { "@type": "Question", "name": "How do I generate a proof for a file using Zynapse?", "acceptedAnswer": { "@type": "Answer", "text": "Upload a document to POST /v1/generate_proof to receive a proof artifact that you can later pass to /v1/ask for verified Q&A. The endpoint accepts PDF, image, and text files via multipart form data." } },
-      { "@type": "Question", "name": "How do I generate images with the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "Send a JSON POST request to /v1/generate/image with a text prompt and optional parameters like width, height, and guidance scale to generate images. The response is typically PNG bytes streamed directly, though some deployments return an image_url instead." } },
-      { "@type": "Question", "name": "How do I generate videos with the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "Send a JSON POST request to /v1/generate-video with a text prompt and optional tuning parameters like frame count and aspect ratio. The API returns a job object with a status and download URL, or in some deployments streams the video file directly." } },
-      { "@type": "Question", "name": "How do I manage users and API keys in Zynapse?", "acceptedAnswer": { "@type": "Answer", "text": "Zynapse provides admin endpoints for adding users, generating API keys with scoped permissions, and revoking keys. These management endpoints are proxied under the same base domain and may require an admin secret or service token." } },
-      { "@type": "Question", "name": "What errors can the Zynapse API return?", "acceptedAnswer": { "@type": "Answer", "text": "The Zynapse API returns errors in a standard JSON envelope with a code, message, and optional details field. Common HTTP status codes range from 400 for bad requests to 503 for service errors." } },
-      { "@type": "Question", "name": "What are the rate limits and best practices for the Zynapse API?", "acceptedAnswer": { "@type": "Answer", "text": "Zynapse enforces rate limits and returns HTTP 429 when exceeded. Follow best practices like caching proofs client-side, splitting large PDFs, and using exponential backoff to maximize reliability." } }
-    ]
-  })}
-  </script>
-  <script type="application/ld+json">
-  {JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "headline": "How do I use the Zynapse API?",
-    "proficiencyLevel": "Advanced",
-    "about": { "@type": "SoftwareApplication", "name": "ZkAGI" },
-    "dateModified": "2026-03-11"
-  })}
-  </script>
-</Head>
-
-
-----------------------------------------
-SOURCE: trust-center/disclosures.md (https://docs.zkagi.ai/docs/trust-center/disclosures)
-----------------------------------------
-
----
-id: disclosures
-title: Disclosures
-sidebar_position: 3
-description: "The fine print, said plainly: R&D status, per-engagement configuration, and where compliance responsibility lives."
----
-
-# Disclosures
-
-The fine print, said plainly. We'd rather you read this now than discover it
-in a contract later.
-
-## 1. Some of this is live. Some is active R&D.
-
-We are a research lab as much as a product company. Parts of what these docs
-describe run in production today; others are under active research and
-development, and capabilities land at different times. The
-[Status board](/docs/trust-center/status) is the single source of truth, and
-before you commit to anything we'll tell you exactly which pieces are ready
-for your use case and which are still on the bench.
-
-## 2. Configured with you, not off the shelf.
-
-Deployments are assembled per customer and validated to your satisfaction
-before go-live. That's the point of the compiler. It also means we do not
-promise that every capability described in these docs exists as a general,
-ready-made feature for every workload. What we deliver for you is what we
-agree with you, in writing. Your agreement with zkAGI defines the guarantees,
-availability and service levels that apply, and that agreement is what
-governs, over anything on this site.
-
-## 3. Your audit stays your audit.
-
-zkAGI is not an audit firm, and our inference service has not itself been
-audited or certified against HIPAA, GDPR, the EU AI Act, or any similar
-framework. Compliance responsibility stays with you, the customer. Our job is
-to make that job easier: receipts, attestations and documentation built to be
-handed to your auditor, plus hands-on help getting ready. **We assist with
-audit preparation; we do not conduct audits, issue certifications, or give
-legal advice.** Regulatory mappings in these docs (for example, the table on
-the [Receipts](/docs/platform/receipts) page) are orientation guidance for
-your compliance team, nothing more.
-
-## 4. Benchmarks are ours unless stated otherwise.
-
-Figures like token-recovery bounds are produced by our own benchmark suites
-under stated conditions. They are honest, repeatable, and not a substitute for
-third-party validation. Where a specific deployment needs independent
-measurement, we'll support it.
-
-## 5. Peaceful use only.
-
-zkAGI is built for peaceful, civilian use: business productivity in regulated
-industries. We do not take defense or other dual-use work.
-
-## 6. Trademarks and names.
-
-NVIDIA, Intel TDX, AWS Nitro, Azure Confidential and similar names are
-trademarks of their respective owners, referenced for comparison and
-compatibility description only. OpenAI compatibility refers to API-shape
-compatibility with the OpenAI client SDKs, and implies no affiliation.
-
----
-
-*Questions about any of this deserve a human answer:*
-[*talk to us*](/contact)*. Nothing on this page or this site is legal advice.*
-
-
-----------------------------------------
-SOURCE: trust-center/security-model.md (https://docs.zkagi.ai/docs/trust-center/security-model)
-----------------------------------------
-
----
-id: security-model
-title: Security model
-sidebar_position: 2
-description: "The assumptions we make, stated plainly, because a guarantee is only as good as the assumptions under it."
----
-
-# Security model
-
-**In one breath:** every privacy guarantee stands on assumptions. Here are
-ours, stated plainly, because your security team will ask and they deserve a
-straight answer.
-
-## What we assume, per anchor
-
-### Mathematics (MPC / secret sharing)
-
-- **Non-collusion.** Shares of your data go to operator-disjoint nodes. The
-  guarantee is information-theoretic *provided the operators don't all
-  conspire*. This is the standard MPC assumption, and we strengthen it by
-  placing operators in different organizations and jurisdictions.
-- **The dealer.** Someone has to split the data into shares. That role can run
-  on **your own device**, so shares are created inside your walls. If you let
-  a server deal instead, that server momentarily holds the input, and your
-  threat model should account for it. We default to client-side dealing where
-  the workload allows.
-- **Masking is not magic.** Lightweight masked serving (our Private tier) has
-  measured, non-zero recovery bounds, and a serving node that knows exactly
-  which model it runs can in principle attack a masking. That's why bounds are
-  benchmarked and published per deployment, and why higher-sensitivity work
-  belongs at the Sovereign tier.
-
-### Silicon (confidential computing)
-
-- **The vendor's root of trust.** Enclave guarantees (NVIDIA confidential
-  computing on GPUs, Intel TDX, AWS Nitro) rest on the hardware vendor's
-  silicon, microcode and attestation service. If your framework can't accept
-  a hardware vendor in the trust chain, use the mathematics anchor.
-- **Side channels exist.** Confidential computing narrows the attack surface;
-  it doesn't abolish physics. We treat enclaves as a strong layer, best used
-  hybrid.
-
-### Both anchors
-
-- **Receipts prove computation, not intent.** A STARK receipt proves the
-  declared computation ran correctly on the declared configuration. It cannot
-  prove that no other copy of unencrypted data existed somewhere it was never
-  supposed to be. Perimeter and anchor choices are what prevent that; the
-  receipt is what evidences them.
-- **Keys and clients.** If your API key leaks or the client machine that
-  generates proofs is compromised, cryptography downstream can't save you.
-  Standard key hygiene applies; rotation is built into the API.
-
-## What we deliberately don't claim
-
-- We don't claim "100% privacy" as a blanket. We state which property holds
-  (e.g. information-theoretic under non-collusion) and where it applies.
-- We don't claim certifications we don't hold. See
-  [Disclosures](/docs/trust-center/disclosures).
-- We don't claim the platform is finished. See the
-  [Status board](/docs/trust-center/status).
-
-## Peaceful use, in writing
-
-zkAGI is built for peaceful, civilian use: business productivity in regulated
-industries such as healthcare, banking and legal. We don't take defense or
-other dual-use work. If that costs us a deal, so be it.
-
-:::info Found something?
-If you believe you've found a vulnerability, [contact us](/contact) with
-"SECURITY" in the subject and we'll respond fast. We're grateful to everyone
-who kicks the tires.
-:::
-
-
-----------------------------------------
-SOURCE: trust-center/status.md (https://docs.zkagi.ai/docs/trust-center/status)
-----------------------------------------
-
----
-id: status
-title: Status board
-sidebar_position: 1
-description: "The single source of truth for what's live, what's active R&D, and what's configured per engagement."
----
-
-# Status board
-
-**This page is the single source of truth** for how far along each capability
-is. If a marketing page and this table ever disagree, this table wins. Last
-reviewed: July 2026.
-
-Legend: <span className="zk-status zk-status--live">● Live</span> serving real
-traffic today · <span className="zk-status zk-status--rnd">◐ Active R&D</span>
-runs and is benchmarked, deployed with design partners under written caveats ·
-<span className="zk-status zk-status--engagement">◇ Per engagement</span>
-assembled with our team for your deployment, scope agreed in writing.
-
-| Capability | Status | Notes |
-|---|---|---|
-| OpenAI-compatible inference endpoint | ● Live | Hosted; in-perimeter endpoints per engagement |
-| Standard tier (on-device scrubbing) | ● Live | |
-| Private tier (masked serving) | ● Live | Recovery bounds are our own benchmarks |
-| Verification receipts | ● Live | STARK proofs on supported paths |
-| Client-side proof generation (`/v1/generate_proof`) | ● Live | Zynapse |
-| Proof-unlocked document Q&A (`/v1/ask`) | ● Live | Zynapse |
-| Media generation (image / video) | ● Live | Zynapse |
-| Sovereign tier (MPC serving) | ◐ Active R&D | Deployed per engagement; batch latency |
-| Dealer-on-client-device secret sharing | ◐ Active R&D | |
-| Selective disclosure under MPC (private introspection) | ◐ Active R&D | Architecture target; see page caveat |
-| FHE inference variants | ◐ Active R&D | Workload-dependent |
-| Federated learning | ◐ Active R&D | With design partners |
-| Private training / fine-tuning | ◐ Active R&D | |
-| Confidential-hardware serving (NVIDIA CC, TDX, Nitro) | ◇ Per engagement | On attested infrastructure you or your cloud provide |
-| Custom perimeters (on-prem / regional / transcontinental) | ◇ Per engagement | |
-| The Explorer (receipt browser) | ◇ Per engagement | Access on request |
-| Compiler-assembled per-customer stacks | ◐ Active R&D | Done with our team today |
-
-## How to read "Active R&D"
-
-It doesn't mean vaporware, and it doesn't mean production-hardened. It means:
-the capability runs, we measure it, we're honest about its edges, and if it
-matters to your deployment we'll demonstrate it on your data before anything
-is signed. What we won't do is let a slide deck promise it for us.
-
-:::info
-This board is maintained by hand and reviewed with every significant release.
-Questions about a specific line? [Ask us directly](/contact) and you'll get an
-engineer's answer, not a sales answer.
-:::

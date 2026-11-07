@@ -1,46 +1,46 @@
 # zkAGI
 
-> Privacy-preserving AI infrastructure for regulated industries (healthcare,
-> banking, legal). Customers define a trust domain: a trust anchor (silicon =
-> attested hardware such as NVIDIA confidential computing, mathematics =
-> cryptography such as MPC, secret sharing and FHE, or hybrid = both), an
-> assurance tier, and a physical perimeter. The Altaica compiler assembles the
-> serving stack that enforces those choices and exposes an OpenAI-compatible
-> endpoint hosted inside the customer's perimeter. Every call returns a
-> verifiable receipt auditors can check. Swiss-governed. Peaceful, civilian
-> use only. Parts of the platform are active R&D; every docs page carries an
-> honest status label, and deployments are configured per engagement.
+> zkAGI builds privacy-preserving AI infrastructure. Its public product is the
+> Zynapse API at https://api.zkagi.ai/v1: an OpenAI-compatible gateway, also
+> Anthropic-compatible on /v1/messages. It scrubs sensitive values before a
+> model sees them, routes each call by privacy lane (fast = zero-data-retention
+> open models, tee = open models in an attested GPU TEE, frontier = closed
+> models, always scrubbed, opt-in), and returns a content-free receipt for
+> every call.
 
-Full corpus for ingestion: https://docs.zkagi.ai/llms-full.txt
+Onboard an agent with these facts. They are exact as of 2026-11-07.
 
-## Start here
+- Base URL (OpenAI SDKs): `https://api.zkagi.ai/v1`. Base URL (Anthropic SDKs, Claude Code `ANTHROPIC_BASE_URL`): `https://api.zkagi.ai`.
+- Auth: `Authorization: Bearer zyn_...` or `X-Api-Key: zyn_...`. A person makes keys at https://zkterminal.zkagi.ai/id/keys (the key is shown once) and adds credit at https://zkterminal.zkagi.ai/id/credit ($10 minimum to start; 402 without it). An agent cannot make a key; ask the human for one.
+- Endpoints: `POST /v1/chat/completions`, `POST /v1/messages`. Public: `GET /v1/models`, `GET /v1/lanes`, `GET /v1/pricing`.
+- Lane: model suffix `kimi-k3:tee`, or body `"lane": "tee"`, or header `X-Zynapse-Lane: tee`. The default for a key is `fast`. With no model, the call goes to `glm-5.3-flash`.
+- fast models: deepseek-v4.1-flash, glm-5.3-flash, glm-5.3, kimi-k3. tee models: glm-5.3-flash, glm-5.3, kimi-k3, deepseek-v4-flash-0731, qwen3.8-27b, gemma-4-31b-it (tee only). Aliases: zynapse-fast, zynapse-balanced (both glm-5.3-flash), zynapse-max (kimi-k3).
+- frontier (opt-in per account, 403 otherwise): claude-sonnet-5-5, claude-haiku-5-5, claude-opus-5-5, claude-fable-5-1. A Claude id without `lane=frontier` is served by an open model.
+- On fast and tee, an unrecognised model id is served by glm-5.3-flash (no error). Read the response `model` / `zynapse.served_by` to see what served the call.
+- Tools (OpenAI and Anthropic formats) and streaming (SSE) work on every lane. Images and voice notes must be inline data URLs; video works on tee only. There is no image generation, embeddings or Responses API.
+- Non-streaming responses include a `zynapse` object: lane, served_by, privacy_tier, sensitive_items_removed_before_send, receipt_url, cost_usd.
 
-- [Welcome](https://docs.zkagi.ai/docs/): the one-sentence idea and where everything lives
-- [In plain words](https://docs.zkagi.ai/docs/plain-words): jargon-free explanation for non-engineers
-- [Quickstart](https://docs.zkagi.ai/docs/api/quickstart): OpenAI-compatible API in minutes
+Full corpus in one file: https://docs.zkagi.ai/llms-full.txt
 
-## Understand the trust model
+## Zynapse API
 
-- [Trust domains](https://docs.zkagi.ai/docs/trust/trust-domains): silicon, mathematics, or hybrid anchors
-- [Tiers](https://docs.zkagi.ai/docs/trust/tiers): Standard, Private, Sovereign
-- [Perimeter](https://docs.zkagi.ai/docs/trust/perimeter): on-prem, one region, or spread
-- [Security model](https://docs.zkagi.ai/docs/trust-center/security-model): threat model, written for skeptics
+- [Quickstart](https://docs.zkagi.ai/docs/api/quickstart): get a key; curl, OpenAI Python/JS and Anthropic SDK examples
+- [How it works](https://docs.zkagi.ai/docs/api/how-it-works): lanes, model choice, scrubbing and rehydration, the response block, headers, errors, receipts
+- [Chat apps, agents and coding agents](https://docs.zkagi.ai/docs/api/integrations): LibreChat, Open WebUI, Claude Code, Hermes Agent, OpenAI Agents SDK, LangChain, Vercel AI SDK, aider; tool calling and streaming
+- [Images, voice, speech and documents](https://docs.zkagi.ai/docs/api/multimodal): image/video input, voice notes, /v1/audio/transcriptions, /v1/audio/speech, /v1/files/extract
+- [Endpoint reference](https://docs.zkagi.ai/docs/api/zynapse): every public route
 
-## Platform
+## Trust and status
 
-- [The Altaica compiler](https://docs.zkagi.ai/docs/platform/compiler): how a deployment is assembled
-- [Receipts](https://docs.zkagi.ai/docs/platform/receipts): the per-call compliance artifact
-- [Workloads](https://docs.zkagi.ai/docs/platform/workloads): inference, fine-tuning, federated learning, confidential-hardware serving
-- [Zynapse API](https://docs.zkagi.ai/docs/api/zynapse): endpoint reference
-
-## Honesty and status
-
-- [Status board](https://docs.zkagi.ai/docs/trust-center/status): what is live vs active R&D
-- [Disclosures](https://docs.zkagi.ai/docs/trust-center/disclosures): the fine print, said plainly
+- [Status board](https://docs.zkagi.ai/docs/trust-center/status): what is live and what is R&D
+- [Security model](https://docs.zkagi.ai/docs/trust-center/security-model): threat model
+- [Disclosures](https://docs.zkagi.ai/docs/trust-center/disclosures): the fine print
+- [Receipts](https://docs.zkagi.ai/docs/platform/receipts): the per-call compliance record
 
 ## Optional
 
-- [Main site](https://zkagi.ai): product story, tiers, Explorer, adoption paths
-- [Sovereign AI](https://zkagi.ai/sovereign): one primitive from individual to nation scale
-- [Contact](https://docs.zkagi.ai/contact): a human reads every message
-- [GitHub](https://github.com/ZkAGI): Altaica-Mesh is open source
+- [Welcome](https://docs.zkagi.ai/docs/): the platform story: trust domains, the Altaica compiler, tiers
+- [In plain words](https://docs.zkagi.ai/docs/plain-words): for non-engineers
+- [Trust domains](https://docs.zkagi.ai/docs/trust/trust-domains): silicon, mathematics or hybrid anchors
+- [Legacy endpoints](https://docs.zkagi.ai/docs/api/legacy): older zynapse.zkagi.ai proof and media endpoints, not part of the gateway
+- [Contact](https://docs.zkagi.ai/contact): enable the frontier lane, private deployments

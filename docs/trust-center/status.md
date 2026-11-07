@@ -9,7 +9,7 @@ description: "The single source of truth for what's live, what's active R&D, and
 
 **This page is the single source of truth** for how far along each capability
 is. If a marketing page and this table ever disagree, this table wins. Last
-reviewed: July 2026.
+reviewed: 7 November 2026.
 
 Legend: <span className="zk-status zk-status--live">● Live</span> serving real
 traffic today · <span className="zk-status zk-status--rnd">◐ Active R&D</span>
@@ -19,13 +19,19 @@ assembled with our team for your deployment, scope agreed in writing.
 
 | Capability | Status | Notes |
 |---|---|---|
-| OpenAI-compatible inference endpoint | ● Live | Hosted; in-perimeter endpoints per engagement |
-| Standard tier (on-device scrubbing) | ● Live | |
-| Private tier (masked serving) | ● Live | Recovery bounds are our own benchmarks |
-| Verification receipts | ● Live | STARK proofs on supported paths |
-| Client-side proof generation (`/v1/generate_proof`) | ● Live | Zynapse |
-| Proof-unlocked document Q&A (`/v1/ask`) | ● Live | Zynapse |
-| Media generation (image / video) | ● Live | Zynapse |
+| Zynapse gateway, OpenAI-compatible (`/v1/chat/completions`) | ● Live | `https://api.zkagi.ai/v1`; in-perimeter endpoints per engagement |
+| Anthropic-compatible `/v1/messages` (Claude Code, Anthropic SDKs) | ● Live | Same lanes, scrubbing and receipts |
+| `fast` lane: open models, zero-data-retention host | ● Live | deepseek-v4.1-flash, glm-5.3-flash, glm-5.3, kimi-k3. No hardware proof |
+| `tee` lane: open models in an attested GPU TEE | ● Live | Phala Cloud; attestation and signed response receipt checked by the gateway; fails closed. gemma-4-31b-it, kimi-k3, glm-5.3, qwen3.8-27b and others |
+| `frontier` lane: closed models, always scrubbed | ● Live, opt-in | claude-sonnet-5-5, claude-haiku-5-5, claude-opus-5-5, claude-fable-5-1. No zero-retention or hardware guarantee. argon-4 listed, rate pending |
+| PII scrubbing before send, rehydration after (incl. tool-call arguments) | ● Live | Pattern detectors; see [How it works](/docs/api/how-it-works#scrubbing) |
+| Per-call receipts (`/r/{id}`) | ● Live | Content-free: amounts, counts, hashes, verification status |
+| Image input; video input (tee only) | ● Live | Inline data URLs only |
+| Voice notes, speech-to-text, text-to-speech | ● Live | Run on the gateway; audio is not sent to a provider |
+| Document text extraction (`/v1/files/extract`) | ● Live | PDF, DOCX, images, text |
+| `zynapse-auto` model selection | ◇ Per engagement | Private sealed-router deployments only; not on `api.zkagi.ai` |
+| `mpc` and `obfuscated` lanes | ◐ Active R&D | Return 501 on the gateway today |
+| Legacy proof generation, proof-unlocked Q&A, image/video generation (`zynapse.zkagi.ai`) | ◇ Re-checking | Separate older host, not part of the gateway; see [Legacy endpoints](/docs/api/legacy) |
 | Sovereign tier (MPC serving) | ◐ Active R&D | Deployed per engagement; batch latency |
 | Dealer-on-client-device secret sharing | ◐ Active R&D | |
 | Selective disclosure under MPC (private introspection) | ◐ Active R&D | Architecture target; see page caveat |

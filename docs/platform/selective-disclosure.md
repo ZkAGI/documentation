@@ -52,8 +52,10 @@ curl -s -X POST "https://zynapse.zkagi.ai/v1/ask" \
   -F "proof_file=@proof.json;filename=proof.json;type=application/json"
 ```
 
-Full parameters, error codes and SDK snippets are in the
-[Zynapse API reference](/docs/api/zynapse).
+Full parameters, error codes and SDK snippets are in
+[Legacy endpoints](/docs/api/legacy). These calls run on the older
+`zynapse.zkagi.ai` host, not on the `api.zkagi.ai` gateway, and their
+availability is being re-checked. [Ask us](/contact) before you build on them.
 
 ## Now couple it with the Sovereign tier
 

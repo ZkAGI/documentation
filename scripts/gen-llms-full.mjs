@@ -9,8 +9,11 @@ const ROOT = new URL('..', import.meta.url).pathname;
 const DOCS = join(ROOT, 'docs');
 const OUT = join(ROOT, 'static', 'llms-full.txt');
 
-// Deterministic reading order: intro and plain-words first, then grouped.
-const ORDER = ['intro.md', 'plain-words.md', 'trust/', 'platform/', 'api/', 'trust-center/'];
+// Deterministic reading order: the Zynapse API onboarding path first (what an
+// agent pointed at this file needs), then the platform story, then the rest.
+const ORDER = ['api/quickstart.md', 'api/how-it-works.md', 'api/integrations.md',
+  'api/multimodal.md', 'api/zynapse.md', 'trust-center/status.md',
+  'intro.md', 'plain-words.md', 'trust/', 'platform/', 'trust-center/', 'api/'];
 
 function collect(dir) {
   const out = [];
@@ -32,11 +35,13 @@ const files = collect(DOCS).sort((a, b) => rank(a) - rank(b) || a.localeCompare(
 
 let body = `# zkAGI — full documentation (auto-generated)
 
-> Privacy-preserving AI infrastructure. You define the trust domain (silicon,
-> mathematics, or hybrid); the Altaica compiler assembles the stack that
-> enforces it; every call returns a verifiable receipt. Swiss-governed, built
-> for peaceful civilian use in regulated industries.
+> Privacy-preserving AI infrastructure. The Zynapse API
+> (https://api.zkagi.ai/v1, OpenAI- and Anthropic-compatible) scrubs sensitive
+> values before a model sees them, routes by privacy lane (fast, tee,
+> frontier) and returns a content-free receipt for every call. Swiss-governed,
+> built for peaceful civilian use in regulated industries.
 
+Short index: https://docs.zkagi.ai/llms.txt
 Canonical docs: https://docs.zkagi.ai · Main site: https://zkagi.ai
 This file concatenates every documentation page for LLM ingestion.
 

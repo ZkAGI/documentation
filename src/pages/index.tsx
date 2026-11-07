@@ -59,16 +59,16 @@ function Starfield() {
 
 /* ------------- the receipt that types itself, over and over --------------- */
 const RECEIPT_LINES = [
-  '$ curl https://infer.zkagi.ai/v1/chat/completions \\',
-  '    -H "Authorization: Bearer $ZKAGI_KEY" \\',
-  '    -d \'{"tier":"sovereign","messages":[…]}\'',
+  '$ curl https://api.zkagi.ai/v1/chat/completions \\',
+  '    -H "Authorization: Bearer $ZYNAPSE_API_KEY" \\',
+  '    -d \'{"model":"kimi-k3","lane":"tee","messages":[…]}\'',
   '',
-  '"receipt": {',
-  '   "trust_domain": "mathematics",',
-  '   "tier":         "sovereign-mpc",',
-  '   "guarantee":    "information-theoretic",',
-  '   "egress":       "none",',
-  '   "proof":        "stark:0x9f3a…c481"   ✓ VERIFIED',
+  '"zynapse": {',
+  '   "lane":         "tee",',
+  '   "privacy_tier": "TEE",',
+  '   "original_values_left_device": false,',
+  '   "sensitive_items_removed_before_send": {"EMAIL": 1},',
+  '   "receipt_url":  "https://api.zkagi.ai/r/rcpt_…"',
   '}',
 ];
 
